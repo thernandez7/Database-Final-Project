@@ -79,7 +79,6 @@ public class MainProgram
 		{
 			case 1: //Unregistered user -- register
 				System.out.println("Welcome New User \nPlease provide the following information to create your account: ");
-
 				System.out.println("Enter Username: ");
 				scan.nextLine();
 				String username= scan.nextLine();
@@ -132,9 +131,10 @@ public class MainProgram
 					while(true)
 					{
 					System.out.println("Please enter an option below (1,2,3): ");
-					System.out.println("2.) View certain user's information");
-					System.out.println("3.) Modify registration info of a user");
-					System.out.println("5.) Exit");
+					System.out.println("1.) View certain user's information");
+					System.out.println("2.) Modify registration info of a user");
+					System.out.println("3.) Delete an admin acct");
+					System.out.println("4.) Exit");
 					int ch= scan.nextInt();
 					scan.nextLine();//eat up extra 
 					System.out.println("");
@@ -159,7 +159,7 @@ public class MainProgram
 							}
 							String oldacctname = myuser.username;
 
-							System.out.println("What attribute would you like to update(username, password, first name, last name): ");
+							System.out.println("What attribute would you like to update (username, password, first name, last name): ");
 							String attr= scan.nextLine();
 							System.out.println("Enter new value of "+ attr+ ": ");
 							String newvalue= scan.nextLine();
@@ -180,8 +180,14 @@ public class MainProgram
 							System.out.print("Update Successful! New Info: ");
 							dm.selectExample(myuser.username);// prints user new info
 							break;
+						case 3: 
+							System.out.println("Enter username of user to delete");
+							String user2= scan.nextLine();
+							dm.deleteExample(user2);
+							System.out.println("The account has been removed!");
+							break;
 
-						case 3: //Exit
+						case 4: //Exit
 							System.exit(0);
 							break;
 					}
@@ -194,7 +200,5 @@ public class MainProgram
 				break;
 		}
 		}//end while true
-
 	}
-
 }

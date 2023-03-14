@@ -78,7 +78,7 @@ public class MainProgram
 		switch(choice)
 		{
 			case 1: //Unregistered user -- register
-				System.out.println("Welcome New User \nPlease provide the following information to create your account: ");
+				System.out.println("Welcome New User! \nPlease provide the following information to create your account: ");
 				System.out.println("Enter Username: ");
 				scan.nextLine();
 				String username= scan.nextLine();

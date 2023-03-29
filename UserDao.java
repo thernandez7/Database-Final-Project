@@ -85,11 +85,11 @@ public class UserDao {
 	   try {
 		//System.out.println("In selectAll()...");
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("select * from ACCOUNT1");
+		ResultSet resultSet = statement.executeQuery("select * from USERS");
 		  
 		while (resultSet.next())
 		{
-			User user = new User(resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("firstname"),resultSet.getString("lastname"));
+			User user = new User(resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("name"),resultSet.getString("admin"));
 			result.add(user);
 		}
 		resultSet.close();
@@ -112,11 +112,11 @@ public class UserDao {
 	try {
 		//System.out.println("In selecByUsername()...");
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("select * from ACCOUNT1 where username='"+ (username)+"'");
+		ResultSet resultSet = statement.executeQuery("select * from USERS where username='"+ (username)+"'");
 		  
 		if (resultSet.next())
 		{
-		  result = new User(resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("firstname"),resultSet.getString("lastname"));
+		  result = new User(resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("name"),resultSet.getString("admin"));
 		}
 		  
 		resultSet.close();
@@ -138,13 +138,13 @@ public class UserDao {
 	try {
 		//System.out.println("In insert()...");
 		Statement statement = connection.createStatement();
-		String sql = "insert into ACCOUNT1 values ("+
+		String sql = "insert into USERS values ("+
 								"'"+user.username+"',"+
 								"'"+user.password+"',"+
-								"'"+user.firstname+"',"+
-								"'"+user.lastname+"')";
+								"'"+user.name+"',"+
+								"'"+user.admin+"')";
 
-		//System.out.println("insert(): "+sql);
+		System.out.println("insert(): "+sql);
 		statement.executeUpdate(sql);
 		statement.close();
 	}
@@ -165,16 +165,16 @@ public void update(User user,String oldusername)//updates user
 
 			String us= user.username;
 			String ps= user.password;
-			String fn= user.firstname;
-			String ln= user.lastname;
+			String fn= user.name;
+			String ad= user.admin;
 			
 
-		statement.executeUpdate("delete from ACCOUNT1 where username='"+ oldusername+"'");
-		String sql = "insert into ACCOUNT1 values ("+
+		statement.executeUpdate("delete from USERS where username='"+ oldusername+"'");
+		String sql = "insert into USERS values ("+
 								  "'"+us+"',"+
 								  "'"+ps+"',"+
 								  "'"+fn+"',"+
-								  "'"+ln+"')";
+								  "'"+ad+"')";
 
 		//System.out.println("update(): "+sql);
 		statement.executeUpdate(sql);
@@ -194,7 +194,7 @@ public void update(User user,String oldusername)//updates user
 	 try {
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
-		statement.executeUpdate("delete from ACCOUNT1 where username='"+ user.username+"'");
+		statement.executeUpdate("delete from USERS where username='"+ user.username+"'");
 		statement.close();
 	}
 	catch (Exception e)

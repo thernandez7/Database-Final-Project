@@ -10,7 +10,7 @@ public class MainProgram
 	{
 		UserDao dao = new UserDao();
 		
-		ArrayList<Object> list = dao.selectAll();
+		ArrayList<Object> list = dao.selectAll(); 
 		return list;
 	}
 
@@ -28,9 +28,9 @@ public class MainProgram
 	/////////////////////////////////////////////////////////////
 	// INSERT EXAMPLE
 	/////////////////////////////////////////////////////////////
-	public void insertExample(String username, String password, String firstname,  String lastname)
+	public void insertExample(String username, String password, String name,  String admin)
 	{
-		User user = new User(username,password,firstname, lastname);
+		User user = new User(username,password,name,admin);
 		UserDao dao = new UserDao();
 		dao.insert(user);
 	}
@@ -69,8 +69,8 @@ public class MainProgram
 		while(true)
 		{
 		System.out.println("Please enter an option below (1,2,3): ");
-		System.out.println("1.) Add Admin: Register Now");
-		System.out.println("2.) Admin Users: Login");
+		System.out.println("1.) Add User: Register Now");
+		System.out.println("2.) Users: Login");
 		System.out.println("3.) Exit");
 		int choice= scan.nextInt();
 		System.out.println("");
@@ -84,17 +84,17 @@ public class MainProgram
 				String username= scan.nextLine();
 				System.out.println("Enter Password: ");
 				String password= scan.nextLine();
-				System.out.println("Enter your first name: ");
-				String firstname= scan.nextLine();
-				System.out.println("Enter your last name: ");
-				String lastname= scan.nextLine();
+				System.out.println("Enter your name: ");
+				String name= scan.nextLine();
+				System.out.println("Are you an Admin?(Yes or No): ");
+				String admin= scan.nextLine();
 				
-				dm.insertExample(username,password,firstname,lastname);
+				dm.insertExample(username,password,name,admin);
 				System.out.println("You have been added to the system!");
 				System.out.println("");
 				break;
 
-			case 2: //Admin user-- login 
+			case 2: // user-- login 
 				boolean found= false;
 				String use="";
 				System.out.println("You have 3 chances to log in");
@@ -119,7 +119,7 @@ public class MainProgram
 						}
 					}
 					if (!found)
-						System.out.println("That username and password combination is not in the Admin system.");
+						System.out.println("That username and password combination is not in the system.");
 					else
 						break;
 				}
@@ -127,72 +127,160 @@ public class MainProgram
 				//have menu to perform operations
 				if (found)
 				{
-					System.out.println("Welcome Back Admin! ");
-					while(true)
+					ArrayList<Object> userlist= dm.selectExample();
+					User u = new User("","","","");
+					for (int j=0; j<userlist.size(); j++) //loop through users
 					{
-					System.out.println("Please enter an option below (1,2,3): ");
-					System.out.println("1.) View certain user's information");
-					System.out.println("2.) Modify registration info of a user");
-					System.out.println("3.) Delete an admin acct");
-					System.out.println("4.) Exit");
-					int ch= scan.nextInt();
-					scan.nextLine();//eat up extra 
-					System.out.println("");
-
-					switch(ch)//choices for admin user
-					{
-						case 1: //view user info
-							dm.selectExample(use); //PRINTS the admin logged in
+						User user= (User)userlist.get(j);
+						if (user.getUsername().equals(use))
+						{
+							u=(User)userlist.get(j);
 							break;
-						case 2: //modify register info 
-							//get user object 
-							ArrayList<Object> users= dm.selectExample();
-							User myuser= new User();
-							for(int n=0; n<users.size(); n++)//check if valid match
-							{
-								User user= (User)users.get(n);
-								if (user.getUsername().equals(use))//get username specified
-								{
-									myuser= user;
-									break;
-								}
-							}
-							String oldacctname = myuser.username;
-
-							System.out.println("What attribute would you like to update (username, password, first name, last name): ");
-							String attr= scan.nextLine();
-							System.out.println("Enter new value of "+ attr+ ": ");
-							String newvalue= scan.nextLine();
-
-							if (attr.equalsIgnoreCase("username")){
-								myuser.username= newvalue;
-								use= newvalue;}
-							else if (attr.equalsIgnoreCase("password"))
-								myuser.password= newvalue;
-							else if (attr.equalsIgnoreCase("first name"))
-								myuser.firstname= newvalue;
-							else if (attr.equalsIgnoreCase("last name"))
-								myuser.lastname= newvalue;
-							else 
-								System.out.print("Valid attribute not specified ");
-							
-							dm.updateExample(myuser, oldacctname);
-							System.out.print("Update Successful! New Info: ");
-							dm.selectExample(myuser.username);// prints user new info
-							break;
-						case 3: 
-							System.out.println("Enter username of user to delete");
-							String user2= scan.nextLine();
-							dm.deleteExample(user2);
-							System.out.println("The account has been removed!");
-							break;
-
-						case 4: //Exit
-							System.exit(0);
-							break;
+						}
 					}
-					}//end while true
+
+					//ADMIN CAPABILITIES
+					if (u.getAdmin().equalsIgnoreCase("Yes"))//if admin user
+					{
+						System.out.println("Welcome Back Admin User! ");
+						while(true)
+						{
+						System.out.println("Please enter an option below (1,2,3,4): ");
+						System.out.println("1.) View all user's information");
+						System.out.println("2.) Modify info of a user");
+						System.out.println("3.) Delete a user");
+						System.out.println("4.) Exit");
+						int ch= scan.nextInt();
+						scan.nextLine();//eat up extra 
+						System.out.println("");
+
+						switch(ch)//choices for admin user
+						{
+							case 1: //view user info
+								ArrayList<Object> userlist1= dm.selectExample();
+								for (int i=0; i<userlist1.size(); i++)
+									System.out.println((User) userlist1.get(i));
+								break;
+							case 2: //modify register info 
+								System.out.println("Enter username of account to modify: ");
+								String acct=scan.nextLine();
+
+								//get user object 
+								ArrayList<Object> users= dm.selectExample();
+								User myuser= new User();
+								for(int n=0; n<users.size(); n++)//check if valid match
+								{
+									User user= (User)users.get(n);
+									if (user.getUsername().equals(acct))//get username specified
+									{
+										myuser= user;
+										break;
+									}
+								}
+								String oldacctname = myuser.username;
+
+								System.out.println("What attribute would you like to update (username, password, name, admin): ");
+								String attr= scan.nextLine();
+								System.out.println("Enter new value of "+ attr+ ": ");
+								String newvalue= scan.nextLine();
+
+								if (attr.equalsIgnoreCase("username")){
+									myuser.username= newvalue;
+									use= newvalue;}
+								else if (attr.equalsIgnoreCase("password"))
+									myuser.password= newvalue;
+								else if (attr.equalsIgnoreCase("name"))
+									myuser.name= newvalue;
+								else if (attr.equalsIgnoreCase("admin"))
+									myuser.admin= newvalue;
+								else 
+									System.out.print("Valid attribute not specified ");
+								
+								dm.updateExample(myuser, oldacctname);
+								System.out.print("Update Successful! New Info: ");
+								dm.selectExample(myuser.username);// prints user new info
+								break;
+							case 3: 
+								System.out.println("Enter username of user to delete");
+								String user2= scan.nextLine();
+								dm.deleteExample(user2);
+								System.out.println("The account has been removed!");
+								break;
+							case 4: //Exit
+								System.exit(0);
+								break;
+						}
+						}//end while true
+					}
+					else //NORMAL USER-- NOT A ADMIN
+					{
+						System.out.println("Welcome Regular User! ");
+						while(true)
+						{
+						System.out.println("Please enter an option below (1,2,3,4): ");
+						System.out.println("1.) View your information");
+						System.out.println("2.) Modify your user info");
+						System.out.println("3.) Delete your user");
+						System.out.println("4.) Exit");
+						int ch= scan.nextInt();
+						scan.nextLine();//eat up extra 
+						System.out.println("");
+
+						switch(ch)//choices for normal user
+						{
+							case 1: //view user info
+								dm.selectExample(u.getUsername()); //PRINTS the user logged in
+								break;
+							case 2: //modify register info 
+								//get user object 
+								ArrayList<Object> users= dm.selectExample();
+								User myuser= new User();
+								for(int n=0; n<users.size(); n++)//check if valid match
+								{
+									User user= (User)users.get(n);
+									if (user.getUsername().equals(u.getUsername()))//get username specified
+									{
+										myuser= user;
+										break;
+									}
+								}
+								String oldacctname = myuser.username;
+
+								System.out.println("What attribute would you like to update (username, password, name, admin): ");
+								String attr= scan.nextLine();
+								System.out.println("Enter new value of "+ attr+ ": ");
+								String newvalue= scan.nextLine();
+
+								if (attr.equalsIgnoreCase("username")){
+									myuser.username= newvalue;
+									use= newvalue;}
+								else if (attr.equalsIgnoreCase("password"))
+									myuser.password= newvalue;
+								else if (attr.equalsIgnoreCase("name"))
+									myuser.name= newvalue;
+								else if (attr.equalsIgnoreCase("admin"))
+									myuser.admin= newvalue;
+								else 
+									System.out.print("Valid attribute not specified ");
+								
+								dm.updateExample(myuser, oldacctname);
+								System.out.print("Update Successful! New Info: ");
+								dm.selectExample(myuser.username);// prints user new info
+								break;
+							case 3: 
+								dm.deleteExample(u.getUsername());
+								System.out.println("The account has been removed!");
+								break;
+
+							case 4: //Exit
+								System.exit(0);
+								break;
+						}
+						}//end while true
+					}
+					
 				}
+				
 				break;
 			case 3: //exit
 

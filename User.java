@@ -2,23 +2,23 @@ public class User
 {
 	public String username;
 	public String password;
-	public String firstname;
-	public String lastname;
+	public String name;
+	public String admin;
 	
 	public User()
 	{
 		username=null;
 		password=null;
-		firstname= null;
-		lastname=null;
+		name=null;
+		admin=null;
 	}
 	
-	public User(String username, String password, String firstname,  String lastname)
+	public User(String username, String password, String name,  String admin)
 	{
 		this.username= username;
 		this.password= password;
-		this.firstname= firstname;
-		this.lastname=lastname;
+		this.name= name;
+		this.admin=admin;
 	}
 	
 	/* getters and setters for the attributes */
@@ -38,23 +38,23 @@ public class User
 		this.password = password;
 	}
 
-	public String getFirstName() {
-		return firstname;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstName(String firstname) {
-		this.firstname = firstname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getLastName() {
-		return lastname;
+	public String getAdmin() {
+		return admin;
 	}
 
-	public void setLastName(String lastname) {
-		this.lastname = lastname;
+	public void setAdmin(String admin) {
+		this.admin = admin;
 	}
 
 	public String toString(){
-		return (username + " " + password + " " +firstname + " " + lastname);
+		return (username + " " + password + " " +name + " " + admin);
 	}
 }

@@ -1,12 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.sql.*;  //for clob
+import java.io.*; 
 
 public class MainProgram 
 {
-	/////////////////////////////////////////////////////////////
-	// SELECT EXAMPLE
-	/////////////////////////////////////////////////////////////
-	public ArrayList<Object> selectExample()
+	public ArrayList<Object> SelectUser()
 	{
 		UserDao dao = new UserDao();
 		
@@ -14,7 +13,8 @@ public class MainProgram
 		return list;
 	}
 
-	public void selectExample(String username)//prints only one user with specified username
+
+	public void SelectUser(String username)//prints only one user with specified username
 	{
 		UserDao dao = new UserDao();
 		
@@ -25,35 +25,70 @@ public class MainProgram
 				System.out.println((User)list.get(i));
 	}
 
-	/////////////////////////////////////////////////////////////
-	// INSERT EXAMPLE
-	/////////////////////////////////////////////////////////////
-	public void insertExample(String username, String password, String name,  String admin)
+
+	public void insertUser(String username, String password, String name,  String admin)
 	{
 		User user = new User(username,password,name,admin);
 		UserDao dao = new UserDao();
 		dao.insert(user);
 	}
 
-	/////////////////////////////////////////////////////////////
-	// UPDATE EXAMPLE
-	/////////////////////////////////////////////////////////////
-	public void updateExample(User user,String oldusername)
+
+	public void updateUser(User user,String oldusername)
 	{
 		UserDao dao = new UserDao();
 		dao.update(user,oldusername);
 	}
 
-	/////////////////////////////////////////////////////////////
-	// DELETE EXAMPLE
-	/////////////////////////////////////////////////////////////
-	public void deleteExample(String username)
+
+	public void deleteUser(String username)
 	{
 		UserDao dao = new UserDao();
 		User user = dao.selectByUsername(username);
 		dao.delete(user);
 	}
 
+//----------------------------------end of user methods---------------beginning of URL methods--------------------------------
+
+	public ArrayList<Object> SelectUrl()
+	{
+		UrlDao dao = new UrlDao();
+		
+		ArrayList<Object> list = dao.selectAll(); 
+		return list;
+	}
+
+
+	public void SelectUrl(String urlLink)//prints only one link with specified link
+	{
+		UrlDao dao = new UrlDao();
+		
+		ArrayList<Object> list = dao.selectAll();
+		
+		for (int i=0; i<list.size(); i++)
+			if(((Url)list.get(i)).urlLink.equals(urlLink))
+				System.out.println((Url)list.get(i));
+	}
+
+
+	public void insertUrl(String urlLink, String ptitle, Clob text)
+	{
+		Url url = new Url(urlLink,ptitle,text);
+		UrlDao dao = new UrlDao();
+		dao.insert(url);
+	}
+
+
+	public void deleteUrl(String urlLink)
+	{
+		UrlDao dao = new UrlDao();
+		Url url = dao.selectByUrlLink(urlLink);
+		dao.delete(url);
+	}
+
+
+//---------------------------------end of URL methods----------------- beginning of main method--------------------------------
+	
 	public static void main(String [] args)
 	{
 		Scanner scan= new Scanner(System.in); Scanner scan1= new Scanner(System.in);
@@ -61,9 +96,10 @@ public class MainProgram
 		MainProgram dm = new MainProgram();
 		System.out.println();
 
-		ArrayList<Object> l= dm.selectExample();
+		ArrayList<Object> l= dm.SelectUser();
 		for (int i=0; i<l.size(); i++)
 			System.out.println((User) l.get(i));//prints all users
+
 
 		System.out.println("Welcome!");
 		while(true)
@@ -89,7 +125,7 @@ public class MainProgram
 				System.out.println("Are you an Admin?(Yes or No): ");
 				String admin= scan.nextLine();
 				
-				dm.insertExample(username,password,name,admin);
+				dm.insertUser(username,password,name,admin);
 				System.out.println("You have been added to the system!");
 				System.out.println("");
 				break;
@@ -106,7 +142,7 @@ public class MainProgram
 					System.out.println("Enter your password: ");
 					String ps= scan1.nextLine();
 
-					ArrayList<Object> list= dm.selectExample();
+					ArrayList<Object> list= dm.SelectUser();
 
 					for (int j=0; j<list.size(); j++) //check if valid match
 					{
@@ -127,7 +163,7 @@ public class MainProgram
 				//have menu to perform operations
 				if (found)
 				{
-					ArrayList<Object> userlist= dm.selectExample();
+					ArrayList<Object> userlist= dm.SelectUser();
 					User u = new User("","","","");
 					for (int j=0; j<userlist.size(); j++) //loop through users
 					{
@@ -157,7 +193,7 @@ public class MainProgram
 						switch(ch)//choices for admin user
 						{
 							case 1: //view user info
-								ArrayList<Object> userlist1= dm.selectExample();
+								ArrayList<Object> userlist1= dm.SelectUser();
 								for (int i=0; i<userlist1.size(); i++)
 									System.out.println((User) userlist1.get(i));
 								break;
@@ -166,7 +202,7 @@ public class MainProgram
 								String acct=scan.nextLine();
 
 								//get user object 
-								ArrayList<Object> users= dm.selectExample();
+								ArrayList<Object> users= dm.SelectUser();
 								User myuser= new User();
 								for(int n=0; n<users.size(); n++)//check if valid match
 								{
@@ -196,14 +232,14 @@ public class MainProgram
 								else 
 									System.out.print("Valid attribute not specified ");
 								
-								dm.updateExample(myuser, oldacctname);
+								dm.updateUser(myuser, oldacctname);
 								System.out.print("Update Successful! New Info: ");
-								dm.selectExample(myuser.username);// prints user new info
+								dm.SelectUser(myuser.username);// prints user new info
 								break;
 							case 3: 
 								System.out.println("Enter username of user to delete");
 								String user2= scan.nextLine();
-								dm.deleteExample(user2);
+								dm.deleteUser(user2);
 								System.out.println("The account has been removed!");
 								break;
 							case 4: //Exit
@@ -229,11 +265,11 @@ public class MainProgram
 						switch(ch)//choices for normal user
 						{
 							case 1: //view user info
-								dm.selectExample(u.getUsername()); //PRINTS the user logged in
+								dm.SelectUser(u.getUsername()); //PRINTS the user logged in
 								break;
 							case 2: //modify register info 
 								//get user object 
-								ArrayList<Object> users= dm.selectExample();
+								ArrayList<Object> users= dm.SelectUser();
 								User myuser= new User();
 								for(int n=0; n<users.size(); n++)//check if valid match
 								{
@@ -263,12 +299,12 @@ public class MainProgram
 								else 
 									System.out.print("Valid attribute not specified ");
 								
-								dm.updateExample(myuser, oldacctname);
+								dm.updateUser(myuser, oldacctname);
 								System.out.print("Update Successful! New Info: ");
-								dm.selectExample(myuser.username);// prints user new info
+								dm.SelectUser(myuser.username);// prints user new info
 								break;
 							case 3: 
-								dm.deleteExample(u.getUsername());
+								dm.deleteUser(u.getUsername());
 								System.out.println("The account has been removed!");
 								break;
 

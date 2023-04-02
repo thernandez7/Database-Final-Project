@@ -59,15 +59,12 @@ public class MainProgram
 	}
 
 
-	public void SelectUrl(String urlLink)//prints only one link with specified link
+	public String SelectUrl(String urlLink)//prints only one link with specified link
 	{
 		UrlDao dao = new UrlDao();
 		
 		ArrayList<Object> list = dao.selectAll();
-		
-		for (int i=0; i<list.size(); i++)
-			if(((Url)list.get(i)).urlLink.equals(urlLink))
-				System.out.println((Url)list.get(i));
+		return dao.selectByUrlLink(urlLink).toString();
 	}
 
 	public void insertUrl(String urlLink, String ptitle, Clob text, String startingUrl, int crawlNum)
@@ -107,7 +104,41 @@ public class MainProgram
 		qDao.delete(qDao.selectByQuery(queryIn));
 	}
 
-//---------------------------------end of query methods----------------- beginning of main method--------------------------------
+//---------------------------------end of query methods----------------- beginning of webcrawl methods------------------------------
+
+
+	public ArrayList<Object> SelectWebcrawl()
+	{
+		WebcrawlDao dao = new WebcrawlDao();
+		
+		ArrayList<Object> list = dao.selectAll(); 
+		return list;
+	}
+
+
+	public String SelectWebcrawl(int crawlNum)//prints only one link with specified link
+	{
+		WebcrawlDao dao = new WebcrawlDao();
+		
+		ArrayList<Object> list = dao.selectAll();
+		return dao.selectByCrawlNum(crawlNum).toString();
+	}
+
+	public void insertWebcrawl(String timeRun, String username, int crawlNum)
+	{
+		Webcrawl webcrawl = new Webcrawl(timeRun,username,crawlNum);
+		WebcrawlDao dao = new WebcrawlDao();
+		dao.insert(webcrawl);
+	}
+
+	public void deleteWebcrawl(int crawlNum)
+	{
+		WebcrawlDao dao = new WebcrawlDao();
+		Webcrawl webcrawl = dao.selectByCrawlNum(crawlNum);
+		dao.delete(webcrawl);
+	}
+
+//---------------------------------end of webcrawl methods----------------- beginning of main method--------------------------------
 	
 	public static void main(String [] args)
 	{

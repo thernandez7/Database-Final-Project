@@ -84,8 +84,30 @@ public class MainProgram
 		dao.delete(url);
 	}
 
+//----------------------------------end of user methods---------------beginning of query methods--------------------------------
 
-//---------------------------------end of URL methods----------------- beginning of main method--------------------------------
+	public ArrayList<Object> selectQuery() {
+
+		QueryDao qDao = new QueryDao();
+		return qDao.selectAll();
+	}
+
+	public String selectQuery(String queryIn) {
+		QueryDao qDao = new QueryDao();
+		return qDao.selectByQuery(queryIn).toString();
+	}
+
+	public void insertQuery(String username, String queryString, String topUrl) {
+		QueryDao qDao = new QueryDao();
+		qDao.insert(new Query(username, queryString, topUrl));
+	}
+
+	public void deleteQuery(String queryIn) {
+		QueryDao qDao = new QueryDao();
+		qDao.delete(qDao.selectByQuery(queryIn));
+	}
+
+//---------------------------------end of query methods----------------- beginning of main method--------------------------------
 	
 	public static void main(String [] args)
 	{

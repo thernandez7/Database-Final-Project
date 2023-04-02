@@ -70,14 +70,12 @@ public class MainProgram
 				System.out.println((Url)list.get(i));
 	}
 
-
-	public void insertUrl(String urlLink, String ptitle, Clob text)
+	public void insertUrl(String urlLink, String ptitle, Clob text, String startingUrl, int crawlNum)
 	{
-		Url url = new Url(urlLink,ptitle,text);
+		Url url = new Url(urlLink,ptitle,text,startingUrl,crawlNum);
 		UrlDao dao = new UrlDao();
 		dao.insert(url);
 	}
-
 
 	public void deleteUrl(String urlLink)
 	{
@@ -99,7 +97,6 @@ public class MainProgram
 		ArrayList<Object> l= dm.SelectUser();
 		for (int i=0; i<l.size(); i++)
 			System.out.println((User) l.get(i));//prints all users
-
 
 		System.out.println("Welcome!");
 		while(true)

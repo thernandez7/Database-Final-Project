@@ -257,13 +257,17 @@ public class MainProgram
 								//call the webcrawl to begin
 
 								//insert each url in the crawl into the Url db table
-								
+
 
 								break;
 							case 2://do a search
 								System.out.println("Enter in your query: ");
 								String userquery= scan.nextLine();
+								//call search
+
 								//insert this query into the db Query table
+
+								//print out results for user to view 
 
 								break;
 							case 3: //view user info
@@ -359,7 +363,12 @@ public class MainProgram
 						switch(ch)//choices for normal user
 						{
 							case 1: //Do a search
+								//call search
 
+								//insert this query into the db Query table
+
+								//print out results for user to view 
+								
 								break;
 							case 2: //view your user info
 								dm.SelectUser(u.getUsername()); //PRINTS the user logged in

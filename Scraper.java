@@ -21,7 +21,8 @@ public class Scraper
 		test.webCrawler(homepage);
 	}
 
-	public String textScraper(String url) throws IOException {
+	public String textScraper(String url) throws IOException 
+	{
 		Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
 		Elements body = doc.select("tbody");
 		System.out.println(url + " - " + body.select("tr").size());
@@ -36,7 +37,8 @@ public class Scraper
 		return total;
 	}
 
-	public void webCrawler(String url) throws IOException {
+	public void webCrawler(String url) throws IOException 
+	{
 		if(checkURL(url)) {
 			urlsArr[x] = url;
 			x++;
@@ -56,7 +58,8 @@ public class Scraper
 		}
 	}
 
-	public boolean checkURL(String url) { // will change this to work with database
+	public boolean checkURL(String url) // will change this to work with database
+	{
 		for(int i = 0; i < x; i++) {
 			if(urlsArr[i].equals(url)) { return false; } // Already in array
 		}

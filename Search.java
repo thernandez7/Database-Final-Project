@@ -34,19 +34,19 @@ public class Search {
             queryResults.add(searchSingle(entry)); // Add the lists of URLs found for each word to a larger list
         }
 
-
         // Add results of individual word searches to results, from most searched words found to least
-        for (int i = words.length; i > 0; i--) { // Put the URLs found the most times at the top of the results
-            for (Url foundUrl: queryResults.get(0)) {
+        // Put the URLs found the most times at the top of the results
+        for (int i = words.length; i > 0; i--) { //for length of words in query
+            for (Url foundUrl: queryResults.get(0)) { //for every url from single word searches
                 int timesFound = 1;
-                for (ArrayList<Url> list: queryResults) { // Count the number of times the URL was found in the various words searched
-                    if (list.indexOf(foundUrl) != -1) {
+                for (ArrayList<Url> list: queryResults) { //for each list of URLs in query results
+                    if (list.indexOf(foundUrl) != -1) { //if found in that list
                         timesFound += 1;
                     }
                 }
-                if (timesFound == i) {
-                    results.add(foundUrl);
-                    for (ArrayList<Url> list: queryResults) {
+                if (timesFound == i) {//i starts at #of words in query and decreases each iteration
+                    results.add(foundUrl);//will add to results in order of times found
+                    for (ArrayList<Url> list: queryResults) {//for each list
                         list.remove(foundUrl); // Remove the URL from all lists it was found in
                         if (list.size() == 0) { // Remove the individual list of URLs from queryResults once empty
                             queryResults.remove(list);
@@ -55,7 +55,6 @@ public class Search {
                 }
             }
         }   
-
         return results;
     }
 }

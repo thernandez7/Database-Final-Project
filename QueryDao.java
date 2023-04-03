@@ -85,7 +85,7 @@ public class QueryDao {
 	   try {
 		//System.out.println("In selectAll()...");
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("select * from QUERY");
+		ResultSet resultSet = statement.executeQuery("select * from QUERIES");
 		  
 		while (resultSet.next())
 		{
@@ -112,7 +112,7 @@ public class QueryDao {
 	try {
 		//System.out.println("In selecByUsername()...");
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("select * from QUERY where query='"+ queryPassed+"'");
+		ResultSet resultSet = statement.executeQuery("select * from QUERIES where query='"+ queryPassed+"'");
 		  
 		if (resultSet.next())
 		{
@@ -162,7 +162,7 @@ public class QueryDao {
 	 try {
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
-		statement.executeUpdate("delete from QUERY where query='"+ query.queryInput+"'");
+		statement.executeUpdate("delete from QUERIES where query='"+ query.queryInput+"'");
 		statement.close();
 	}
 	catch (Exception e)

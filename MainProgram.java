@@ -231,23 +231,65 @@ public class MainProgram
 						System.out.println("Welcome Back Admin User! ");
 						while(true)
 						{
-						System.out.println("Please enter an option below (1,2,3,4): ");
-						System.out.println("1.) View all user's information");
-						System.out.println("2.) Modify info of a user");
-						System.out.println("3.) Delete a user");
-						System.out.println("4.) Exit");
+						System.out.println("Please enter an option below: ");
+						System.out.println("1.) Run webcrawl");
+						System.out.println("2.) Do a search");
+						System.out.println("3.) View all user's information");
+						System.out.println("4.) View a users previous queries");
+						System.out.println("5.) Modify info of a user");
+						System.out.println("6.) Delete a user");
+						System.out.println("7.) Exit");
 						int ch= scan.nextInt();
 						scan.nextLine();//eat up extra 
 						System.out.println("");
 
 						switch(ch)//choices for admin user
 						{
-							case 1: //view user info
+							case 1://run webcrawl
+								Scraper scraper= new Scraper();//make scraper methods above to avoid making this object?
+								System.out.println("Enter in a starting Url: ");
+								String starturl= scan.nextLine();
+
+								//insert url into the db url table
+
+								//insert webcrawl into the db webcrawl table
+
+								//call the webcrawl to begin
+
+								//insert each url in the crawl into the Url db table
+								
+
+								break;
+							case 2://do a search
+								System.out.println("Enter in your query: ");
+								String userquery= scan.nextLine();
+								//insert this query into the db Query table
+
+								break;
+							case 3: //view user info
 								ArrayList<Object> userlist1= dm.SelectUser();
 								for (int i=0; i<userlist1.size(); i++)
 									System.out.println((User) userlist1.get(i));
 								break;
-							case 2: //modify register info 
+							case 4://View a users previous queries
+								System.out.println("Enter username of account to view queries of: ");
+								String acctname=scan.nextLine();
+
+								//get Query object 
+								ArrayList<Object> queries= dm.selectQuery();
+								Query myq= new Query();
+								for(int n=0; n<queries.size(); n++)//check if valid match
+								{
+									Query query= (Query)queries.get(n);
+									if (query.getUsername().equals(acctname))//get username specified
+									{
+										myq= query;//holds user we want to view queries of
+										System.out.println((Query)myq);
+										break;
+									}
+								}
+								break;
+							case 5: //modify register info of a user
 								System.out.println("Enter username of account to modify: ");
 								String acct=scan.nextLine();
 
@@ -286,13 +328,13 @@ public class MainProgram
 								System.out.print("Update Successful! New Info: ");
 								dm.SelectUser(myuser.username);// prints user new info
 								break;
-							case 3: 
+							case 6: 
 								System.out.println("Enter username of user to delete");
 								String user2= scan.nextLine();
 								dm.deleteUser(user2);
 								System.out.println("The account has been removed!");
 								break;
-							case 4: //Exit
+							case 7: //Exit
 								System.exit(0);
 								break;
 						}
@@ -303,21 +345,41 @@ public class MainProgram
 						System.out.println("Welcome Regular User! ");
 						while(true)
 						{
-						System.out.println("Please enter an option below (1,2,3,4): ");
-						System.out.println("1.) View your information");
-						System.out.println("2.) Modify your user info");
-						System.out.println("3.) Delete your user");
-						System.out.println("4.) Exit");
+						System.out.println("Please enter an option below: ");
+						System.out.println("1.) Do a Search");
+						System.out.println("2.) View your information");
+						System.out.println("3.) View your previous queries");
+						System.out.println("4.) Modify your user info");
+						System.out.println("5.) Delete your user");
+						System.out.println("6.) Exit");
 						int ch= scan.nextInt();
 						scan.nextLine();//eat up extra 
 						System.out.println("");
 
 						switch(ch)//choices for normal user
 						{
-							case 1: //view user info
+							case 1: //Do a search
+
+								break;
+							case 2: //view your user info
 								dm.SelectUser(u.getUsername()); //PRINTS the user logged in
 								break;
-							case 2: //modify register info 
+							case 3: //view your previous queries
+								//get Query object 
+								ArrayList<Object> queries= dm.selectQuery();
+								Query myq= new Query();
+								for(int n=0; n<queries.size(); n++)//check if valid match
+								{
+									Query query= (Query)queries.get(n);
+									if (query.getUsername().equals(u.getUsername()))//get username specified
+									{
+										myq= query;//holds user we want to view queries of
+										System.out.println((Query)myq);
+										break;
+									}
+								}
+								break;
+							case 4: //modify your registration info 
 								//get user object 
 								ArrayList<Object> users= dm.SelectUser();
 								User myuser= new User();
@@ -353,23 +415,19 @@ public class MainProgram
 								System.out.print("Update Successful! New Info: ");
 								dm.SelectUser(myuser.username);// prints user new info
 								break;
-							case 3: 
+							case 5: //delete your acct
 								dm.deleteUser(u.getUsername());
 								System.out.println("The account has been removed!");
 								break;
-
-							case 4: //Exit
+							case 6: //Exit
 								System.exit(0);
 								break;
 						}
 						}//end while true
 					}
-					
 				}
-				
 				break;
 			case 3: //exit
-
 				System.exit(0);
 				break;
 		}

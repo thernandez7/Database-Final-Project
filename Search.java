@@ -10,7 +10,7 @@ public class Search {
         for (Object entry: allURLs) {
             Url foundUrl = (Url) entry;
             try {
-                if (foundUrl.text.position(queryIn, 0) > -1) { //checks if exact phrasing of query is found in Clob text
+                if (foundUrl.text.position(queryIn, 1) > -1) { //checks if exact phrasing of query is found in Clob text
                     results.add(foundUrl); //add the url to results
                 }
             }
@@ -25,29 +25,36 @@ public class Search {
     public ArrayList<Url> searchPhrase(String queryIn) {
         // Search each word in the phrase individually
         String[] words = queryIn.split(" ");
+        if (words.length == 1) {
+            return searchSingle(queryIn);
+        }
+        ArrayList<Url> results = new ArrayList<Url>();
         ArrayList<ArrayList<Url>> queryResults = new ArrayList<ArrayList<Url>>();
-        for (String entry: words) { //for every word in the query
-            queryResults.add(searchSingle(entry)); //add all urls that contain each word individually
+        for (String entry: words) {
+            queryResults.add(searchSingle(entry)); // Add the lists of URLs found for each word to a larger list
         }
 
 
-        // Automatically add everything containing the full string to results
-        ArrayList<Url> results = new ArrayList<Url>(); //will hold final search results
-        results.addAll(searchSingle(queryIn));//adds urls that contain the entire phrase
-
-
-        // Add all urls that were found for all individual words in the query to results
-        for (Url foundUrl: queryResults.get(0)) {
-            int timesFound = 1; //keep track of how many times a url is found through the single search method
-            for (int i = 1; i < queryResults.size(); ++i) {  //for every url found from the single word searches
-                if (queryResults.get(i).indexOf(foundUrl) != -1) {
-                    timesFound += 1; 
+        // Add results of individual word searches to results, from most searched words found to least
+        for (int i = words.length; i > 0; i--) { // Put the URLs found the most times at the top of the results
+            for (Url foundUrl: queryResults.get(0)) {
+                int timesFound = 1;
+                for (ArrayList<Url> list: queryResults) { // Count the number of times the URL was found in the various words searched
+                    if (list.indexOf(foundUrl) != -1) {
+                        timesFound += 1;
+                    }
+                }
+                if (timesFound == i) {
+                    results.add(foundUrl);
+                    for (ArrayList<Url> list: queryResults) {
+                        list.remove(foundUrl); // Remove the URL from all lists it was found in
+                        if (list.size() == 0) { // Remove the individual list of URLs from queryResults once empty
+                            queryResults.remove(list);
+                        }
+                    }
                 }
             }
-            if (timesFound == queryResults.size() && results.indexOf(foundUrl) == -1) {
-                results.add(foundUrl);
-            }
-        }
+        }   
 
         return results;
     }

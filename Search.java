@@ -42,7 +42,7 @@ public class Search {
                     timesFound += 1;
                 }
             }
-            if (timesFound == queryResults.size()) {
+            if (timesFound == queryResults.size() && results.indexOf(foundUrl) == -1) {
                 results.add(foundUrl);
             }
         }

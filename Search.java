@@ -32,24 +32,20 @@ public class Search {
 
         // Automatically add everything containing the full string to results
         ArrayList<Url> results = new ArrayList<Url>();
-        for (Url result: searchSingle(queryIn)) {
-            results.add(result);
-        }
+        results.addAll(searchSingle(queryIn));
 
-        // Add all urls that were found for all individual words to results
+        // Add all urls that were found for all individual words in the query to results
         for (Url foundUrl: queryResults.get(0)) {
-            int timesFound = 0;
+            int timesFound = 1;
             for (int i = 1; i < queryResults.size(); ++i) {
                 if (queryResults.get(i).indexOf(foundUrl) != -1) {
                     timesFound += 1;
                 }
             }
-            if (timesFound == queryResults.size() - 1) {
+            if (timesFound == queryResults.size()) {
                 results.add(foundUrl);
             }
         }
-
-
 
         return results;
     }

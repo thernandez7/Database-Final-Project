@@ -144,6 +144,7 @@ public class MainProgram
 	{
 		Scanner scan= new Scanner(System.in); Scanner scan1= new Scanner(System.in);
 
+		int crawlNumber=0; //keep track of number of crawls for webcrawl table
 		MainProgram dm = new MainProgram();
 		System.out.println();
 
@@ -246,14 +247,19 @@ public class MainProgram
 						switch(ch)//choices for admin user
 						{
 							case 1://run webcrawl
-								Scraper scraper= new Scraper();//make scraper methods above to avoid making this object?
+								Scraper scraper= new Scraper();
 								System.out.println("Enter in a starting Url: ");
 								String starturl= scan.nextLine();
-
-								//insert url into the db url table
+								System.out.println("Enter the date (MM/DD/YY): ");
+								String date= scan.nextLine();
+								System.out.println("Enter the time (HH:MM(am/pm)): ");
+								String time= scan.nextLine();
+								String datetime= date+ " "+ time;
 
 								//insert webcrawl into the db webcrawl table
-
+								dm.insertWebcrawl(datetime, u.getUsername(), crawlNumber);
+								crawlNumber++;
+								
 								//call the webcrawl to begin
 
 								//insert each url in the crawl into the Url db table
@@ -263,7 +269,7 @@ public class MainProgram
 							case 2://do a search
 								System.out.println("Enter in your query: ");
 								String userquery= scan.nextLine();
-								//call search
+								//call search--store topurl for insert
 
 								//insert this query into the db Query table
 

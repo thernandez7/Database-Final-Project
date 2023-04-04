@@ -18,7 +18,6 @@ public class Search {
                 continue;
             }
         }
-
         return results;
     }
 
@@ -35,10 +34,11 @@ public class Search {
         ArrayList<SiteHit> results = new ArrayList<SiteHit>();
         for (String entry: words) {
             for (Url foundUrl : searchSingle(entry)) {
-                if (results.indexOf(new SiteHit(foundUrl)) == -1) {
-                    results.add(new SiteHit(foundUrl));
+                SiteHit found= new SiteHit(foundUrl);//make one object for found site to use
+                if (results.indexOf(found) == -1) {
+                    results.add(found);
                 } else {
-                    results.get(results.indexOf(new SiteHit(foundUrl))).hitCount += 1;
+                    results.get(results.indexOf(found)).hitCount += 1;
                 }
             }
         }

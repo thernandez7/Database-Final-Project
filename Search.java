@@ -28,33 +28,31 @@ public class Search {
         if (words.length == 1) {
             return searchSingle(queryIn);
         }
-        ArrayList<Url> results = new ArrayList<Url>();
-        ArrayList<ArrayList<Url>> queryResults = new ArrayList<ArrayList<Url>>();
-        for (String entry: words) {
-            queryResults.add(searchSingle(entry)); // Add the lists of URLs found for each word to a larger list
-        }
 
-        // Add results of individual word searches to results, from most searched words found to least
-        // Put the URLs found the most times at the top of the results
-        for (int i = words.length; i > 0; i--) { //for length of words in query
-            for (Url foundUrl: queryResults.get(0)) { //for every url from single word searches
-                int timesFound = 1;
-                for (ArrayList<Url> list: queryResults) { //for each list of URLs in query results
-                    if (list.indexOf(foundUrl) != -1) { //if found in that list
-                        timesFound += 1;
-                    }
-                }
-                if (timesFound == i) {//i starts at #of words in query and decreases each iteration
-                    results.add(foundUrl);//will add to results in order of times found
-                    for (ArrayList<Url> list: queryResults) {//for each list
-                        list.remove(foundUrl); // Remove the URL from all lists it was found in
-                        if (list.size() == 0) { // Remove the individual list of URLs from queryResults once empty
-                            queryResults.remove(list);
-                        }
-                    }
+        // For each word, call the singleSearch method to get the URLs that contain it
+        // If the URL is not already in the list of results, it is added with a hitcount of 1
+        // If the URL is already in the list of results, the number of hits is increased
+        ArrayList<SiteHit> results = new ArrayList<SiteHit>();
+        for (String entry: words) {
+            for (Url foundUrl : searchSingle(entry)) {
+                if (results.indexOf(new SiteHit(foundUrl)) == -1) {
+                    results.add(new SiteHit(foundUrl));
+                } else {
+                    results.get(results.indexOf(new SiteHit(foundUrl))).hitCount += 1;
                 }
             }
-        }   
-        return results;
+        }
+
+        // Make a new list of the URLs sorted by the number of query words it contains, highest to lowest
+        ArrayList<Url> sortedResults = new ArrayList<Url>();
+        for (int i = words.length; i > 0; i--) {
+            for (SiteHit site : results) {
+                if (site.hitCount == i) {
+                    sortedResults.add(site.webpage);
+                }
+            }
+        }
+
+        return sortedResults;
     }
 }

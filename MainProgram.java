@@ -115,7 +115,6 @@ public class MainProgram
 		return list;
 	}
 
-
 	public String SelectWebcrawl(int crawlNum)//prints only one link with specified link
 	{
 		WebcrawlDao dao = new WebcrawlDao();
@@ -237,9 +236,10 @@ public class MainProgram
 						System.out.println("2.) Do a search");
 						System.out.println("3.) View all user's information");
 						System.out.println("4.) View a users previous queries");
-						System.out.println("5.) Modify info of a user");
-						System.out.println("6.) Delete a user");
-						System.out.println("7.) Exit");
+						System.out.println("5.) View previous webcrawls");
+						System.out.println("6.) Modify info of a user");
+						System.out.println("7.) Delete a user");
+						System.out.println("8.) Exit");
 						int ch= scan.nextInt();
 						scan.nextLine();//eat up extra 
 						System.out.println("");
@@ -299,7 +299,12 @@ public class MainProgram
 									}
 								}
 								break;
-							case 5: //modify register info of a user
+							case 5: //view all previous webcrawls
+								ArrayList<Object> allcrawls= dm.SelectWebcrawl();
+								for (int i=0; i<allcrawls.size(); i++)
+									System.out.println((Webcrawl) allcrawls.get(i));//print all webcrawls							
+								break;
+							case 6: //modify register info of a user
 								System.out.println("Enter username of account to modify: ");
 								String acct=scan.nextLine();
 
@@ -338,13 +343,13 @@ public class MainProgram
 								System.out.print("Update Successful! New Info: ");
 								dm.SelectUser(myuser.username);// prints user new info
 								break;
-							case 6: 
+							case 7: 
 								System.out.println("Enter username of user to delete");
 								String user2= scan.nextLine();
 								dm.deleteUser(user2);
 								System.out.println("The account has been removed!");
 								break;
-							case 7: //Exit
+							case 8: //Exit
 								System.exit(0);
 								break;
 						}

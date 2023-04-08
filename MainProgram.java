@@ -58,7 +58,6 @@ public class MainProgram
 		return list;
 	}
 
-
 	public String SelectUrl(String urlLink)//prints only one link with specified link
 	{
 		UrlDao dao = new UrlDao();
@@ -268,13 +267,23 @@ public class MainProgram
 								break;
 							case 2://do a search
 								System.out.println("Enter in your query: ");
-								String userquery= scan.nextLine();
-								//call search--store topurl for insert
+								String queryIn= scan.nextLine();
 
-								//insert this query into the db Query table
+								//call search--store topurl for insert
+								Search search= new Search();
+								Url topurl;
+								ArrayList<Url> searchResults=  search.searchPhrase(queryIn);
+								if (searchResults.size() != 0)//if search didnt return nothing
+								{
+									topurl=searchResults.get(0);//get first result
+									dm.insertQuery(u.getUsername(),queryIn,topurl.urlLink);//insert this query into the db Query table
+								}
+								else
+									dm.insertQuery(u.getUsername(),queryIn, null);//insert this query into the db Query table
 
 								//print out results for user to view 
-
+								for (int i=0; i<searchResults.size(); i++)
+									System.out.println(searchResults.get(i));
 								break;
 							case 3: //view user info
 								ArrayList<Object> userlist1= dm.SelectUser();

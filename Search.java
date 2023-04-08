@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Search {
     public ArrayList<Url> searchSingle(String queryIn) {
         UrlDao uDao = new UrlDao();
-        ArrayList<Object> allURLs = uDao.selectAll();
+        ArrayList<Object> allURLs = uDao.selectAll();//gets all urls from the db
         ArrayList<Url> results = new ArrayList<Url>();
         
         // Find the starting position of the query in each the CLOB of each URL and add to results if found

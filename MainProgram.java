@@ -394,13 +394,25 @@ public class MainProgram
 
 						switch(ch)//choices for normal user
 						{
-							case 1: //Do a search
-								//call search
+							case 1://do a search
+								System.out.println("Enter in your query: ");
+								String queryIn= scan.nextLine();
 
-								//insert this query into the db Query table
+								//call search--store topurl for insert
+								Search search= new Search();
+								Url topurl;
+								ArrayList<Url> searchResults=  search.searchPhrase(queryIn);
+								if (searchResults.size() != 0)//if search didnt return nothing
+								{
+									topurl=searchResults.get(0);//get first result
+									dm.insertQuery(u.getUsername(),queryIn,topurl.urlLink);//insert this query into the db Query table
+								}
+								else
+									dm.insertQuery(u.getUsername(),queryIn, null);//insert this query into the db Query table
 
 								//print out results for user to view 
-								
+								for (int i=0; i<searchResults.size(); i++)
+									System.out.println(searchResults.get(i));
 								break;
 							case 2: //view your user info
 								dm.SelectUser(u.getUsername()); //PRINTS the user logged in

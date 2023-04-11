@@ -16,53 +16,66 @@ public class Scraper
 		String homepage = "http://web.stonehill.edu/compsci/";
 		Scraper test = new Scraper();
 		// System.out.println("Scraper Test");
-		// test.textScraper(homepage);
-		System.out.println("Crawler Test");
-		test.webCrawler(homepage);
+		// System.out.println(test.textScraper(homepage));
+		// System.out.println("Crawler Test");
+		// test.webCrawler(homepage, homepage,1);
 	}
 
-	public String textScraper(String url) throws IOException 
+	public Clob textScraper(String url) throws IOException 
 	{
 		Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
 		Elements body = doc.select("tbody");
-		System.out.println(url + " - " + body.select("tr").size());
-		int i = 0;
 		String total = "";
 		for(Element e : body.select("tr")) {
-			i++;
 			String text = e.text(); 
 			total += text + " ";
-			System.out.println(i + ". " + text);
 		}
-		return total;
+		return stringToClob(total);
 	}
 
-	public void webCrawler(String url) throws IOException 
+	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
 	{
 		if(checkURL(url)) {
-			urlsArr[x] = url;
-			x++;
+			MainProgram mp = new MainProgram();
+			// call titleFinder and set ptitle equal to result
+			String ptitle = "Stonehill";
+			
+			// Insert into DB
+			mp.insertUrl(url,ptitle,textScraper(url),homepage,crawlNum);//fit with correct parameters
 			Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
-			String homepage = "http://web.stonehill.edu/compsci/";
+			// String homepage = "http://web.stonehill.edu/compsci/";
 			Elements body = doc.select("tbody");
 			System.out.println(url + " --- " + body.select("tr").size());
 			int i = 0;
 			for(Element e : body.select("tr")) {
 				String addition = e.select("a").attr("href");
 				if(addition.contains(":") || addition.contains(" ")) { continue; }
-				//i++;
 				String urls = homepage + addition;
-				//System.out.println(i + ". " + urls);
-				webCrawler(urls);
+				webCrawler(urls, homepage, crawlNum);
 			}
 		}
 	}
 
-	public boolean checkURL(String url) // will change this to work with database
-	{
-		for(int i = 0; i < x; i++) {
-			if(urlsArr[i].equals(url)) { return false; } // Already in array
-		}
-		return true; // Not in array
+	public boolean checkURL(String url) { // will change this to work with database
+		MainProgram mp = new MainProgram();
+		// System.out.println("run selectURL");
+		String check = mp.SelectUrl(url);
+		// System.out.println("-------" + check);
+		if(check != "") // Already in DB
+			return false; 
+		return true; // Not in DB
 	}
+	
+	public Clob stringToClob(String str) {  // From java2s.com  - converting a string to Clob
+        if (null == str) {
+            return null;
+        } else {
+            try {
+                java.sql.Clob c = new javax.sql.rowset.serial.SerialClob(str.toCharArray());
+                return c;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+	} 
 }

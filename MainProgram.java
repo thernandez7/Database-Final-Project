@@ -60,10 +60,18 @@ public class MainProgram
 
 	public String SelectUrl(String urlLink)//prints only one link with specified link
 	{
+		// System.out.println("URL: " + urlLink);
 		UrlDao dao = new UrlDao();
-		
 		ArrayList<Object> list = dao.selectAll();
-		return dao.selectByUrlLink(urlLink).toString();
+
+		if(dao.selectByUrlLink(urlLink) != null) {
+			String ret = dao.selectByUrlLink(urlLink).toString();
+			// System.out.println("Return: " + ret);
+			return ret;
+		} else {
+			// System.out.println("No URL found");
+			return "";
+		}
 	}
 
 	public void insertUrl(String urlLink, String ptitle, Clob text, String startingUrl, int crawlNum)
@@ -83,7 +91,6 @@ public class MainProgram
 //----------------------------------end of user methods---------------beginning of query methods--------------------------------
 
 	public ArrayList<Object> selectQuery() {
-
 		QueryDao qDao = new QueryDao();
 		return qDao.selectAll();
 	}
@@ -122,6 +129,12 @@ public class MainProgram
 		return dao.selectByCrawlNum(crawlNum).toString();
 	}
 
+	public int SelectMaxWebcrawl()//prints only one link with specified link
+	{
+		WebcrawlDao dao = new WebcrawlDao();
+		return dao.selectMaxCrawlNum().getCrawlNum();
+	}
+
 	public void insertWebcrawl(String timeRun, String username, int crawlNum)
 	{
 		Webcrawl webcrawl = new Webcrawl(timeRun,username,crawlNum);
@@ -138,12 +151,13 @@ public class MainProgram
 
 //---------------------------------end of webcrawl methods----------------- beginning of main method--------------------------------
 	
-	public static void main(String [] args)
+	public static void main(String [] args) throws IOException
 	{
 		Scanner scan= new Scanner(System.in); Scanner scan1= new Scanner(System.in);
 
-		int crawlNumber=0; //keep track of number of crawls for webcrawl table
 		MainProgram dm = new MainProgram();
+		int crawlNumber=dm.SelectMaxWebcrawl()+1;//keep track of number of crawls for webcrawl table
+		System.out.println("CrawlNum: "+ crawlNumber);
 		System.out.println();
 
 		ArrayList<Object> l= dm.SelectUser();
@@ -257,15 +271,13 @@ public class MainProgram
 
 								//insert webcrawl into the db webcrawl table
 								dm.insertWebcrawl(datetime, u.getUsername(), crawlNumber);
-								crawlNumber++;
 								
-								//call the webcrawl to begin
-
-								//insert each url in the crawl into the Url db table
-
-
+								//call the webcrawl to begin 
+								scraper.webCrawler(starturl, starturl, crawlNumber);//first is changing, second is the inital page
+								
+								crawlNumber++;
 								break;
-							case 2://do a search
+							case 2://do a search- admin
 								System.out.println("Enter in your query: ");
 								String queryIn= scan.nextLine();
 

@@ -130,6 +130,33 @@ public class WebcrawlDao {
 	return result;
   }
 
+    /////////////////////////////////////////////////////////////
+  // SELECT BY Max(crawlnum)***
+  /////////////////////////////////////////////////////////////
+  public Webcrawl selectMaxCrawlNum()
+  {
+	Webcrawl result = null;
+	try {
+		//System.out.println("In selecByUsername()...");
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("select * from Webcrawl where crawlNum=(select Max(crawlNum) from Webcrawl)");
+		  
+		if (resultSet.next())
+		{
+		  result = new Webcrawl(resultSet.getString("timeRun"),resultSet.getString("username"),resultSet.getInt("crawlNum"));
+		}
+		  
+		resultSet.close();
+		statement.close();
+	}
+	catch (Exception e)
+	{
+		e.printStackTrace();
+	}
+
+	return result;
+  }
+
  /////////////////////////////////////////////////////////////
  // INSERT
  /////////////////////////////////////////////////////////////

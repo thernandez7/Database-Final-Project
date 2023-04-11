@@ -85,7 +85,7 @@ public class UrlDao {
 	   try {
 		//System.out.println("In selectAll()...");
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("select * from Url");
+		ResultSet resultSet = statement.executeQuery("select * from Urls");
 		  
 		while (resultSet.next())
 		{
@@ -112,7 +112,7 @@ public class UrlDao {
 	try {
 		//System.out.println("In selecByUsername()...");
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("select * from Url where urlLink='"+ url+"'");
+		ResultSet resultSet = statement.executeQuery("select * from Urls where urlLink='"+ url+"'");
 		  
 		if (resultSet.next())
 		{
@@ -138,7 +138,7 @@ public class UrlDao {
 	try {
 		//System.out.println("In insert()...");
 		Statement statement = connection.createStatement();
-		String sql = "insert into Url values ("+
+		String sql = "insert into Urls values ("+
 								"'"+url.urlLink+"',"+
 								"'"+url.ptitle+"',"+
 								"'"+url.text+ "',"+
@@ -164,7 +164,7 @@ public class UrlDao {
 	 try {
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
-		statement.executeUpdate("delete from Url where url='"+ url.urlLink+"'");
+		statement.executeUpdate("delete from Urls where url='"+ url.urlLink+"'");
 		statement.close();
 	}
 	catch (Exception e)

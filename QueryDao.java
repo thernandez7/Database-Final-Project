@@ -138,7 +138,7 @@ public class QueryDao {
 	try {
 		//System.out.println("In insert()...");
 		Statement statement = connection.createStatement();
-		String sql = "insert into QUERY values ("+
+		String sql = "insert into QUERIES values ("+
 								"'"+query.username+"',"+
 								"'"+query.queryInput+"',"+
 								"'"+query.topURL+ "')";

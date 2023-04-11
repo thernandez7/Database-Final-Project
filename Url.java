@@ -72,6 +72,7 @@ public class Url
 
 	public String toString()
 	{
+		System.out.println(urlLink + " " + ptitle + " " +text+ " "+ startingUrl+ " "+ crawlNum);
 		return (urlLink + " " + ptitle + " " +text+ " "+ startingUrl+ " "+ crawlNum);
 	}
 }

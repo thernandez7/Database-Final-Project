@@ -5,7 +5,7 @@ public class Url
 {
 	public String urlLink;
 	public String ptitle;
-	public Clob text;
+	public InputStream text;
 	public String startingUrl;
 	public int crawlNum;
 	
@@ -18,11 +18,15 @@ public class Url
 		crawlNum= -1;
 	}
 	
-	public Url(String urlLink, String ptitle, Clob text, String startingUrl, int crawlNum)
+	public Url(String urlLink, String ptitle, Clob textIn, String startingUrl, int crawlNum)
 	{
 		this.urlLink= urlLink;
 		this.ptitle= ptitle;
-		this.text= text;
+		try {
+			this.text= textIn.getAsciiStream();
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+		}
 		this.startingUrl=startingUrl;
 		this.crawlNum=crawlNum;
 	}
@@ -44,9 +48,9 @@ public class Url
 		this.ptitle = ptitle;
 	}
 
-	public Clob getText() {
-		return text;
-	}
+	// public Clob getText() {
+	// 	return new javax.sql.rowset.serial.SerialClob(text);
+	// }
 
 	public void setText(Clob text) {
 		this.text = text;

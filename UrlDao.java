@@ -137,7 +137,7 @@ public class UrlDao {
 		String sql = "insert into Urls values ("+
 								"'"+url.urlLink+"',"+
 								"'"+url.ptitle+"',"+
-								"'"+url.text.getAsciiStream()+ "',"+
+								"'"+url.text.toString()+ "',"+
 								"'"+url.startingUrl+ "',"+
 								"'"+String.valueOf(url.crawlNum)+"')";
 

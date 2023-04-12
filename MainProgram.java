@@ -484,10 +484,7 @@ public class MainProgram
 								dm.SelectUser(myuser.username);// prints user new info
 								break;
 							case 5: //delete your acct
-								//can"t delete acct until clear all associating info from other tables***
-								//delete from webcrawl where username=''
-								//delete from queries where username=''
-
+								//can"t delete acct until clear all associating info from other tables
 								dm.deleteUser(u.getUsername());
 								System.out.println("The account has been removed!");
 								break;

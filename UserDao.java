@@ -35,12 +35,8 @@ public class UserDao {
  private void connectToDatabase()
  {
 	 try {
-		 System.out.println("Trying to connect to database getting driver..."); 
 		 driver = (java.sql.Driver) Class.forName(driverName).newInstance();
-		 
-		 System.out.println("Driver loaded.  Connecting to database...");
 		 connection = DriverManager.getConnection(connectionURL);
-		 System.out.println("Connection successful!");
 	 }
 	 catch (Exception e)
 	 {

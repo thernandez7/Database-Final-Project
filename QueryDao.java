@@ -138,11 +138,22 @@ public class QueryDao {
 	try {
 		//System.out.println("In insert()...");
 		Statement statement = connection.createStatement();
-		String sql = "insert into QUERIES values ("+
+		String sql;
+		if (query.topURL!= null)
+		{
+			sql = "insert into QUERIES values ("+
 								"'"+query.username+"',"+
 								"'"+query.queryInput+"',"+
 								"'"+query.topURL+ "')";
-
+		}
+		else //is null- no results for query
+		{
+			sql = "insert into QUERIES values ("+
+								"'"+query.username+"',"+
+								"'"+query.queryInput+"',"+
+								""+query.topURL+ ")";// will be null
+			System.out.println("No results from search");
+		}
 		//System.out.println("insert(): "+sql);
 		statement.executeUpdate(sql);
 		statement.close();

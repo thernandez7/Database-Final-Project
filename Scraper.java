@@ -8,18 +8,17 @@ import java.io.*;
 
 public class Scraper
 {
-	String[] urlsArr = new String[100]; // global array for urls
-	int x = 0;
-
-	public static void main(String [] args) throws IOException
-	{
-		String homepage = "http://web.stonehill.edu/compsci/";
-		Scraper test = new Scraper();
-		// System.out.println("Scraper Test");
-		// System.out.println(test.textScraper(homepage));
-		// System.out.println("Crawler Test");
-		// test.webCrawler(homepage, homepage,1);
-	}
+	// public static void main(String [] args) throws IOException
+	// {
+	// 	String homepage = "http://web.stonehill.edu/compsci/";
+	// 	Scraper test = new Scraper();
+	// 	System.out.println("Title Test");
+	// 	System.out.println(test.titleFinder(homepage));
+	// 	// System.out.println("Scraper Test");
+	// 	// System.out.println(test.textScraper(homepage));
+	// 	// System.out.println("Crawler Test");
+	// 	// test.webCrawler(homepage, homepage,1);
+	// }
 
 	public Clob textScraper(String url) throws IOException 
 	{
@@ -33,12 +32,24 @@ public class Scraper
 		return stringToClob(total);
 	}
 
+	public String titleFinder(String url) throws IOException 
+	{
+		Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+		String title = "";
+		Elements body = doc.select("head");
+		for(Element e : body.select("title")) {
+			title = e.text(); 
+		}
+		// System.out.println("Title - " + title);
+		return title;
+	}
+
 	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
 	{
 		if(checkURL(url)) {
 			MainProgram mp = new MainProgram();
 			// call titleFinder and set ptitle equal to result
-			String ptitle = "Stonehill";
+			String ptitle = titleFinder(url);
 			
 			// Insert into DB
 			mp.insertUrl(url,ptitle,textScraper(url),homepage,crawlNum);//fit with correct parameters

@@ -8,17 +8,17 @@ import java.io.*;
 
 public class Scraper
 {
-	// public static void main(String [] args) throws IOException
-	// {
-	// 	String homepage = "http://web.stonehill.edu/compsci/";
-	// 	Scraper test = new Scraper();
-	// 	System.out.println("Title Test");
-	// 	System.out.println(test.titleFinder(homepage));
-	// 	// System.out.println("Scraper Test");
-	// 	// System.out.println(test.textScraper(homepage));
-	// 	// System.out.println("Crawler Test");
-	// 	// test.webCrawler(homepage, homepage,1);
-	// }
+	public static void main(String [] args) throws IOException
+	{
+		String homepage = "http://web.stonehill.edu/compsci/";
+		Scraper test = new Scraper();
+		// System.out.println("Title Test");
+		// System.out.println(test.titleFinder(homepage));
+		System.out.println("Scraper Test");
+		System.out.println(test.textScraper(homepage));
+		// System.out.println("Crawler Test");
+		// test.webCrawler(homepage, homepage,1);
+	}
 
 	public Clob textScraper(String url) throws IOException 
 	{

@@ -132,7 +132,11 @@ public class MainProgram
 	public int SelectMaxWebcrawl()//prints only one link with specified link
 	{
 		WebcrawlDao dao = new WebcrawlDao();
-		return dao.selectMaxCrawlNum().getCrawlNum();
+		Webcrawl w= dao.selectMaxCrawlNum();
+		if (w != null)
+			return dao.selectMaxCrawlNum().getCrawlNum();
+		else//max crawl is null
+			return 1;//first crawl
 	}
 
 	public void insertWebcrawl(String timeRun, String username, int crawlNum)
@@ -298,7 +302,10 @@ public class MainProgram
 
 								//print out results for user to view 
 								for (int i=0; i<searchResults.size(); i++)
-									System.out.println(searchResults.get(i));
+								{
+									System.out.println(searchResults.get(i).getPtitle());//print ptitle
+									System.out.println("\t"+searchResults.get(i).getUrlLink());//print the Url Link
+								}
 								break;
 							case 3: //view user info
 								ArrayList<Object> userlist1= dm.SelectUser();
@@ -415,7 +422,10 @@ public class MainProgram
 
 								//print out results for user to view 
 								for (int i=0; i<searchResults.size(); i++)
-									System.out.println(searchResults.get(i));
+								{
+									System.out.println(searchResults.get(i).getPtitle());//print ptitle
+									System.out.println("\t"+searchResults.get(i).getUrlLink());//print the Url Link
+								}
 								break;
 							case 2: //view your user info
 								dm.SelectUser(u.getUsername()); //PRINTS the user logged in

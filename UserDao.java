@@ -190,6 +190,10 @@ public void update(User user,String oldusername)//updates user
 	 try {
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
+	
+		statement.executeUpdate("delete from URLS where crawlNum= (select crawlNum from webcrawl where username='"+ user.username+"')");//fix stmt -delete from urls all urls with the crawlnums did by the user
+		statement.executeUpdate("delete from  WEBCRAWL where username='"+ user.username+"'");
+		statement.executeUpdate("delete from QUERIES where username='"+ user.username+"'");
 		statement.executeUpdate("delete from USERS where username='"+ user.username+"'");
 		statement.close();
 	}

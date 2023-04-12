@@ -83,7 +83,7 @@ public class Scraper
         } else {
             try {
                 java.sql.Clob c = new javax.sql.rowset.serial.SerialClob(str.toCharArray());
-                return c;
+				return c;
             } catch (Exception e) {
                 return null;
             }

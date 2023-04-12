@@ -136,7 +136,7 @@ public class MainProgram
 		if (w != null)
 			return dao.selectMaxCrawlNum().getCrawlNum();
 		else//max crawl is null
-			return 1;//first crawl
+			return 0;//first crawl
 	}
 
 	public void insertWebcrawl(String timeRun, String username, int crawlNum)

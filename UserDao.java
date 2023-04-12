@@ -169,12 +169,12 @@ public void update(User user,String oldusername)//updates user
 			String ad= user.admin;
 			
 
-		statement.executeUpdate("delete from USERS where username='"+ oldusername+"'");
-		String sql = "insert into USERS values ("+
-								  "'"+us+"',"+
-								  "'"+ps+"',"+
-								  "'"+fn+"',"+
-								  "'"+ad+"')";
+		// statement.executeUpdate("delete from USERS where username='"+ oldusername+"'");
+		String sql = "UPDATE USERS SET "+
+								  "username='"+us+"',"+
+								  "password='"+ps+"',"+
+								  "name='"+fn+"',"+
+								  "admin='"+ad+"' WHERE username = '"+ oldusername+"'";
 
 		//System.out.println("update(): "+sql);
 		statement.executeUpdate(sql);

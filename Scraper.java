@@ -35,7 +35,7 @@ public class Scraper
 	public String titleFinder(String url) throws IOException 
 	{
 		Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
-		String title = "";
+		String title = "default";
 		Elements body = doc.select("head");
 		for(Element e : body.select("title")) {
 			title = e.text(); 

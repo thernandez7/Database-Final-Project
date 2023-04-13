@@ -160,7 +160,8 @@ public class UrlDao {
 	 try {
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
-		statement.executeUpdate("delete from Urls where url='"+ url.urlLink+"'");
+		statement.executeUpdate("delete from QUERIES where topUrl='"+ url.urlLink+"'");//delete queries with that url as topurl
+		statement.executeUpdate("delete from Urls where url='"+ url.urlLink+"'");//then delete URLs
 		statement.close();
 	}
 	catch (Exception e)

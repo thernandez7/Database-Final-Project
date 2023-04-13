@@ -191,10 +191,10 @@ public void update(User user,String oldusername)//updates user
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
 	
-		statement.executeUpdate("delete from URLS where crawlNum= (select crawlNum from webcrawl where username='"+ user.username+"')");//fix stmt -delete from urls all urls with the crawlnums did by the user
-		statement.executeUpdate("delete from  WEBCRAWL where username='"+ user.username+"'");
-		statement.executeUpdate("delete from QUERIES where username='"+ user.username+"'");
-		statement.executeUpdate("delete from USERS where username='"+ user.username+"'");
+		statement.executeUpdate("delete from URLS where crawlNum= (select crawlNum from webcrawl where username='"+ user.username+"')");//delete from urls all urls with the crawlnums did by the user
+		statement.executeUpdate("delete from  WEBCRAWL where username='"+ user.username+"'");//clear webcrawls done by users
+		statement.executeUpdate("delete from QUERIES where username='"+ user.username+"'");//clear queries done by user
+		statement.executeUpdate("delete from USERS where username='"+ user.username+"'");//finally delete user
 		statement.close();
 	}
 	catch (Exception e)

@@ -185,7 +185,9 @@ public class WebcrawlDao {
 	 try {
 		//System.out.println("In delete()...");
 		Statement statement = connection.createStatement();
-		statement.executeUpdate("delete from Webcrawl where crawlNum='"+ webcrawl.crawlNum+"'");
+		statement.executeUpdate("delete from QUERIES where topurl=(select urlLink from URLS where crawlNum="+ webcrawl.crawlNum+")");//delete queries with topurls from the crawl
+		statement.executeUpdate("delete from URLS where crawlNum="+ webcrawl.crawlNum);//delete urls with that crawlnum
+		statement.executeUpdate("delete from WEBCRAWL where crawlNum="+ webcrawl.crawlNum);//finally delete webcrawl
 		statement.close();
 	}
 	catch (Exception e)

@@ -50,9 +50,9 @@ public class UserDao {
   public void disconnectFromDatabase()
   {
 	try {
-		System.out.println("Trying to disconnect from database...");
+		//System.out.println("Trying to disconnect from database...");
 		connection.close();
-		System.out.println("Disconnection successful...");
+		//System.out.println("Disconnection successful...");
 	}
 	catch (Exception e)
 	{

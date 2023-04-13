@@ -22,26 +22,45 @@ public class Scraper
 
 	public Clob textScraper(String url) throws IOException 
 	{
-		Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
-		Elements body = doc.select("tbody");
+		Document doc= null;
+		try{
+			doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+		}catch(Exception e)
+		{
+			//System.out.println("Faulty URL in scraper");
+		}
 		String total = "";
-		for(Element e : body.select("tr")) {
-			String text = e.text(); 
-			total += text + " ";
+		if (doc !=null)//avoid null pointer
+		{
+			Elements body = doc.select("tbody");
+			for(Element e : body.select("tr")) 
+			{
+				String text = e.text(); 
+				total += text + " ";
+			}
 		}
 		return stringToClob(total);
 	}
 
 	public String titleFinder(String url) throws IOException 
 	{
-		Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
-		String title = "default";
-		Elements body = doc.select("head");
-		for(Element e : body.select("title")) {
-			title = e.text(); 
+		Document doc= null;
+		try{
+			doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+		}catch(Exception e)
+		{
+			//System.out.println("Faulty URL");
+		}
+		String title = "Untitled Page"; //will be default title
+		if (doc!=null)//avoid null pointer
+		{
+			Elements body = doc.select("head");
+			for(Element e : body.select("title")) 
+				title = e.text(); 
 		}
 		// System.out.println("Title - " + title);
-		return title;
+		
+		return title;//will return title or defualt if null
 	}
 
 	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
@@ -50,24 +69,42 @@ public class Scraper
 			MainProgram mp = new MainProgram();
 			// call titleFinder and set ptitle equal to result
 			String ptitle = titleFinder(url);
-			
+			if (ptitle==null)//if null ptitle, change to default value
+				ptitle="Untitled Page";
+
 			// Insert into DB
-			mp.insertUrl(url,ptitle,textScraper(url),homepage,crawlNum);//fit with correct parameters
-			Document doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+			if (homepage.equals(url))//this is the starting url
+				mp.insertUrl(url,ptitle,textScraper(url),"Yes",crawlNum);//a starting url
+			else 
+				mp.insertUrl(url,ptitle,textScraper(url),"No",crawlNum);//not a starting url
+
+			Document doc= null;
+			try{
+				doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+			}
+			catch(Exception e)
+			{
+				//System.out.println("Faulty link in crawl");
+			}
+
 			// String homepage = "http://web.stonehill.edu/compsci/";
-			Elements body = doc.select("tbody");
-			System.out.println(url + " --- " + body.select("tr").size());
-			int i = 0;
-			for(Element e : body.select("tr")) {
-				String addition = e.select("a").attr("href");
-				if(addition.contains(":") || addition.contains(" ")) { continue; }
-				String urls = homepage + addition;
-				webCrawler(urls, homepage, crawlNum);
+			if (doc!= null)//avoid null pointer
+			{
+				Elements body = doc.select("tbody");
+				System.out.println(url + " --- " + body.select("tr").size());
+				//int i = 0;
+				for(Element e : body.select("tr")) 
+				{
+					String addition = e.select("a").attr("href");
+					if(addition.contains(":") || addition.contains(" ")) { continue; }
+					String urls = homepage + addition;
+					webCrawler(urls, homepage, crawlNum);//will only call from working urls
+				}
 			}
 		}
 	}
 
-	public boolean checkURL(String url) { // will change this to work with database
+	public boolean checkURL(String url) {
 		MainProgram mp = new MainProgram();
 		// System.out.println("run selectURL");
 		String check = mp.SelectUrl(url);

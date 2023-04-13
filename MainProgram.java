@@ -378,9 +378,10 @@ public class MainProgram
 								System.out.println("Enter username of user to delete");
 								String user2= scan.nextLine();
 
-
 								dm.deleteUser(user2);
 								System.out.println("The account has been removed!");
+								if (user2.equals(u.getUsername()))
+									System.exit(0);//deleted own account so end program
 								break;
 							case 8: //Exit
 								System.exit(0);
@@ -486,7 +487,8 @@ public class MainProgram
 							case 5: //delete your acct
 								//can"t delete acct until clear all associating info from other tables
 								dm.deleteUser(u.getUsername());
-								System.out.println("The account has been removed!");
+								System.out.println("Your account has been removed!\nGoodbye!");
+								System.exit(0);//end program
 								break;
 							case 6: //Exit
 								System.exit(0);

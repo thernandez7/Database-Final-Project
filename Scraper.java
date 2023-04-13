@@ -3,6 +3,9 @@ import java.lang.*;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
+
+import oracle.jdbc.driver.OracleConnection;
+
 import java.sql.*;  //for Clob type
 import java.io.*;  
 
@@ -119,7 +122,9 @@ public class Scraper
             return null;
         } else {
             try {
-                java.sql.Clob c = new javax.sql.rowset.serial.SerialClob(str.toCharArray());
+				OracleConnection conn = (OracleConnection)DriverManager.getConnection("jdbc:default:connection:");
+				Clob c = conn.createClob();
+                c.setString(1, str);
 				return c;
             } catch (Exception e) {
                 return null;

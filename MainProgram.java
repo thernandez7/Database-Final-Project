@@ -50,11 +50,11 @@ public class MainProgram
 
 //----------------------------------end of user methods---------------beginning of URL methods--------------------------------
 
-	public ArrayList<Object> SelectUrl()
+	public ArrayList<Url> SelectUrl()
 	{
 		UrlDao dao = new UrlDao();
 		
-		ArrayList<Object> list = dao.selectAll(); 
+		ArrayList<Url> list = dao.selectAll(); 
 		return list;
 	}
 
@@ -73,7 +73,7 @@ public class MainProgram
 		}
 	}
 
-	public void insertUrl(String urlLink, String ptitle, String text, String startingUrl, int crawlNum)
+	public void insertUrl(String urlLink, String ptitle, Clob text, String startingUrl, int crawlNum)
 	{
 		Url url = new Url(urlLink,ptitle,text,startingUrl,crawlNum);
 		UrlDao dao = new UrlDao();
@@ -296,13 +296,13 @@ public class MainProgram
 									topurl=searchResults.get(0);//get first result
 									dm.insertQuery(u.getUsername(),queryIn,topurl.urlLink);//insert this query into the db Query table
 								}
-								else
+								else {
 									dm.insertQuery(u.getUsername(),queryIn, null);//insert this query into the db Query table
-
+								}
 								//print out results for user to view 
 								for (int i=0; i<searchResults.size(); i++)
 								{
-									System.out.println(searchResults.get(i).getPtitle());//print ptitle
+									System.out.print(searchResults.get(i).getPtitle());//print ptitle
 									System.out.println("\t"+searchResults.get(i).getUrlLink());//print the Url Link
 								}
 								break;

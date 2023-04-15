@@ -66,17 +66,17 @@ public class Scraper
 	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
 	{
 		if(checkURL(url)) {
-			MainProgram mp = new MainProgram();
+			UrlDao uDao = new UrlDao();
 			// call titleFinder and set ptitle equal to result
 			String ptitle = titleFinder(url);
-			if (ptitle==null)//if null ptitle, change to default value
-				ptitle="Untitled Page";
+			if (ptitle == "" || ptitle == null)//if null ptitle, change to default value
+				ptitle = "Untitled Page";
 
 			// Insert into DB
 			if (homepage.equals(url))//this is the starting url
-				mp.insertUrl(url,ptitle,textScraper(url),"Yes",crawlNum);//a starting url
+				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"Yes",crawlNum));//a starting url
 			else 
-				mp.insertUrl(url,ptitle,textScraper(url),"No",crawlNum);//not a starting url
+				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"No",crawlNum));//not a starting url
 
 			Document doc= null;
 			try{
@@ -125,5 +125,5 @@ public class Scraper
                 return null;
             }
         }
-	} 
+	}
 }

@@ -74,9 +74,9 @@ public class UrlDao {
   /////////////////////////////////////////////////////////////
   // SELECT ALL
   /////////////////////////////////////////////////////////////
-  public ArrayList<Object> selectAll()
+  public ArrayList<Url> selectAll()
   {
-	ArrayList<Object> result = new ArrayList<Object>();
+	ArrayList<Url> result = new ArrayList<Url>();
 	  
 	   try {
 		//System.out.println("In selectAll()...");
@@ -85,7 +85,7 @@ public class UrlDao {
 		  
 		while (resultSet.next())
 		{
-			Url url = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text").toString(),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
+			Url url = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text"),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
 			result.add(url);
 		}
 		resultSet.close();
@@ -112,7 +112,7 @@ public class UrlDao {
 		  
 		if (resultSet.next())
 		{
-		  result = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text").toString(),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
+		  result = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text"),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
 		}
 		  
 		resultSet.close();
@@ -140,7 +140,7 @@ public class UrlDao {
 		String sql = "insert into Urls values ("+
 								"'"+url.urlLink+"',"+
 								"'"+url.ptitle+"',"+
-								text_clob_split(url.text.replace("'", " "))+","+
+								text_clob_split(url.text.getSubString(1, (int)url.text.length()).replace("'", " "))+","+
 								"'"+url.startingUrl+ "',"+
 								"'"+String.valueOf(url.crawlNum)+"')";
 
@@ -192,4 +192,11 @@ public class UrlDao {
 		return result;
 	}
  }
+
+ public static void main(String[] args) throws SQLException {
+	UrlDao uDao = new UrlDao();
+	Statement s = uDao.connection.createStatement();
+	s.executeUpdate("DELETE FROM URLS");
+	System.out.println("Cleared urls");
+ } 
 }

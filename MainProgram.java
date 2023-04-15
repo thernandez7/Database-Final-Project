@@ -62,10 +62,9 @@ public class MainProgram
 	{
 		// System.out.println("URL: " + urlLink);
 		UrlDao dao = new UrlDao();
-		ArrayList<Object> list = dao.selectAll();
 
 		if(dao.selectByUrlLink(urlLink) != null) {
-			String ret = dao.selectByUrlLink(urlLink).toString();
+			String ret = dao.selectByUrlLink(urlLink).getUrlLink();
 			// System.out.println("Return: " + ret);
 			return ret;
 		} else {

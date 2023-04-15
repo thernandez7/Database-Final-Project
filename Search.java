@@ -10,7 +10,7 @@ public class Search {
         for (Object entry: allURLs) {
             Url foundUrl = (Url) entry;
             try {
-                if (foundUrl.text.position(queryIn, 1) > -1) { //checks if exact phrasing of query is found in Clob text
+                if (foundUrl.text.contains(queryIn)) { //checks if exact phrasing of query is found in Clob text
                     results.add(foundUrl); //add the url to results
                 }
             }

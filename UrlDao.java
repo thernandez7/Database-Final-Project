@@ -85,7 +85,7 @@ public class UrlDao {
 		  
 		while (resultSet.next())
 		{
-			Url url = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text"),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
+			Url url = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text").toString(),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
 			result.add(url);
 		}
 		resultSet.close();
@@ -112,7 +112,7 @@ public class UrlDao {
 		  
 		if (resultSet.next())
 		{
-		  result = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text"),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
+		  result = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text").toString(),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
 		}
 		  
 		resultSet.close();
@@ -137,7 +137,7 @@ public class UrlDao {
 		String sql = "insert into Urls values ("+
 								"'"+url.urlLink+"',"+
 								"'"+url.ptitle+"',"+
-								"'"+url.text.toString()+ "',"+
+								"'"+url.text+ "',"+
 								"'"+url.startingUrl+ "',"+
 								"'"+String.valueOf(url.crawlNum)+"')";
 

@@ -74,7 +74,7 @@ public class MainProgram
 		}
 	}
 
-	public void insertUrl(String urlLink, String ptitle, Clob text, String startingUrl, int crawlNum)
+	public void insertUrl(String urlLink, String ptitle, String text, String startingUrl, int crawlNum)
 	{
 		Url url = new Url(urlLink,ptitle,text,startingUrl,crawlNum);
 		UrlDao dao = new UrlDao();

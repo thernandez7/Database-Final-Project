@@ -23,7 +23,7 @@ public class Scraper
 		// test.webCrawler(homepage, homepage,1);
 	}
 
-	public Clob textScraper(String url) throws IOException 
+	public String textScraper(String url) throws IOException 
 	{
 		Document doc= null;
 		try{
@@ -42,7 +42,7 @@ public class Scraper
 				total += text + " ";
 			}
 		}
-		return stringToClob(total);
+		return total;
 	}
 
 	public String titleFinder(String url) throws IOException 
@@ -118,7 +118,7 @@ public class Scraper
 	}
 	
 	public Clob stringToClob(String str) {  // From java2s.com  - converting a string to Clob
-        if (null == str) {
+        if (str.equals(null)) {
             return null;
         } else {
             try {

@@ -5,7 +5,7 @@ public class Url
 {
 	public String urlLink;
 	public String ptitle;
-	public Clob text;
+	public String text;
 	public String startingUrl;
 	public int crawlNum;
 	
@@ -18,7 +18,7 @@ public class Url
 		crawlNum= -1;
 	}
 	
-	public Url(String urlLink, String ptitle, Clob textIn, String startingUrl, int crawlNum)
+	public Url(String urlLink, String ptitle, String textIn, String startingUrl, int crawlNum)
 	{
 		this.urlLink= urlLink;
 		this.ptitle= ptitle;
@@ -44,11 +44,11 @@ public class Url
 		this.ptitle = ptitle;
 	}
 
-	public Clob getText() {
+	public String getText() {
 		return text;
 	}
 
-	public void setText(Clob text) {
+	public void setText(String text) {
 		this.text = text;
 	}
 

@@ -36,7 +36,7 @@ public class Scraper
 		if (doc !=null)//avoid null pointer
 		{
 			Elements body = doc.select("tbody");
-			for(Element e : body.select("tr")) 
+			for(Element e : body.select("tr"))
 			{
 				String text = e.text(); 
 				total += text + " ";

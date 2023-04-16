@@ -3,9 +3,6 @@ import java.lang.*;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
-
-import oracle.jdbc.driver.OracleConnection;
-
 import java.sql.*;  //for Clob type
 import java.io.*;  
 
@@ -23,7 +20,7 @@ public class Scraper
 		// test.webCrawler(homepage, homepage,1);
 	}
 
-	public Clob textScraper(String url) throws IOException 
+	public String textScraper(String url) throws IOException 
 	{
 		Document doc= null;
 		try{
@@ -42,7 +39,7 @@ public class Scraper
 				total += text + " ";
 			}
 		}
-		return stringToClob(total);
+		return total;
 	}
 
 	public String titleFinder(String url) throws IOException 
@@ -69,17 +66,17 @@ public class Scraper
 	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
 	{
 		if(checkURL(url)) {
-			MainProgram mp = new MainProgram();
+			UrlDao uDao = new UrlDao();
 			// call titleFinder and set ptitle equal to result
 			String ptitle = titleFinder(url);
-			if (ptitle==null)//if null ptitle, change to default value
-				ptitle="Untitled Page";
+			if (ptitle == "" || ptitle == null)//if null ptitle, change to default value
+				ptitle = "Untitled Page";
 
 			// Insert into DB
 			if (homepage.equals(url))//this is the starting url
-				mp.insertUrl(url,ptitle,textScraper(url),"Yes",crawlNum);//a starting url
+				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"Yes",crawlNum));//a starting url
 			else 
-				mp.insertUrl(url,ptitle,textScraper(url),"No",crawlNum);//not a starting url
+				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"No",crawlNum));//not a starting url
 
 			Document doc= null;
 			try{
@@ -118,17 +115,15 @@ public class Scraper
 	}
 	
 	public Clob stringToClob(String str) {  // From java2s.com  - converting a string to Clob
-        if (null == str) {
+        if (str.equals(null)) {
             return null;
         } else {
             try {
-				OracleConnection conn = (OracleConnection)DriverManager.getConnection("jdbc:default:connection:");
-				Clob c = conn.createClob();
-                c.setString(1, str);
+                java.sql.Clob c = new javax.sql.rowset.serial.SerialClob(str.toCharArray());
 				return c;
             } catch (Exception e) {
                 return null;
             }
         }
-	} 
+	}
 }

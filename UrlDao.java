@@ -74,9 +74,9 @@ public class UrlDao {
   /////////////////////////////////////////////////////////////
   // SELECT ALL
   /////////////////////////////////////////////////////////////
-  public ArrayList<Object> selectAll()
+  public ArrayList<Url> selectAll()
   {
-	ArrayList<Object> result = new ArrayList<Object>();
+	ArrayList<Url> result = new ArrayList<Url>();
 	  
 	   try {
 		//System.out.println("In selectAll()...");
@@ -132,12 +132,15 @@ public class UrlDao {
  public void insert(Url url)
  {
 	try {
+		if (url.ptitle == null) {
+			url.setPtitle("no page title");
+		}
 		//System.out.println("In insert()...");
 		Statement statement = connection.createStatement();
 		String sql = "insert into Urls values ("+
 								"'"+url.urlLink+"',"+
 								"'"+url.ptitle+"',"+
-								"'"+url.text.toString()+ "',"+
+								text_clob_split(url.text.getSubString(1, (int)url.text.length()).replace("'", " "))+","+
 								"'"+url.startingUrl+ "',"+
 								"'"+String.valueOf(url.crawlNum)+"')";
 
@@ -169,4 +172,31 @@ public class UrlDao {
 		e.printStackTrace();
 	}
  }
+
+//  Converts the passed text into a SQL call to create CLOBs and concatenate them
+// 	Max string length for TO_CLOB call is 4000 chars, so string must be divided and appended 
+// 	Dividing into chunks of 4000 wasn't working for some reason, so I lowered the char count to 3000 for each section
+ public String text_clob_split(String textIn) {
+	if (textIn.length() < 3000) {
+		return ("TO_CLOB('" + textIn + "')");
+	}
+	else {
+		String result = "";
+		for (int i = 0; i < ((textIn.length() / 3000) + 1); i++) {
+			if (i != 0) {
+				result = result + " || ";
+			}
+
+			result = result +"TO_CLOB('" + textIn.substring(i * 3000, Math.min((i+1) * 3000, textIn.length())) + "')";
+		}
+		return result;
+	}
+ }
+
+ public static void main(String[] args) throws SQLException {
+	UrlDao uDao = new UrlDao();
+	Statement s = uDao.connection.createStatement();
+	s.executeUpdate("DELETE FROM URLS");
+	System.out.println("Cleared urls");
+ } 
 }

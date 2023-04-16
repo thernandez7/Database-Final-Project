@@ -14,6 +14,6 @@ public class SiteHit {
 
     @Override
     public boolean equals(Object o) {
-        return (this.webpage.urlLink == ((SiteHit) o).webpage.urlLink);
+        return (this.webpage.urlLink.equals(((SiteHit) o).webpage.urlLink));
     }
 }

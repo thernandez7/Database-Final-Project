@@ -96,7 +96,7 @@ public class Scraper
 				for(Element e : body.select("tr")) 
 				{
 					String addition = e.select("a").attr("href");
-					if(addition.contains(":") || addition.contains(" ")) { continue; }
+					if(addition.contains(":") || addition.contains(" ") || addition.contains("#")) { continue; }
 					String urls = homepage + addition;
 					webCrawler(urls, homepage, crawlNum);//will only call from working urls
 				}

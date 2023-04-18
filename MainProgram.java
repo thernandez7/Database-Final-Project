@@ -50,7 +50,7 @@ public class MainProgram
 
 //----------------------------------end of user methods---------------beginning of URL methods--------------------------------
 
-	public ArrayList<Url> SelectUrl()
+	public ArrayList<Url> SelectUrls()
 	{
 		UrlDao dao = new UrlDao();
 		
@@ -58,7 +58,7 @@ public class MainProgram
 		return list;
 	}
 
-	public String SelectUrl(String urlLink)//prints only one link with specified link
+	public String SelectUrls(String urlLink)//prints only one link with specified link
 	{
 		// System.out.println("URL: " + urlLink);
 		UrlDao dao = new UrlDao();
@@ -110,7 +110,6 @@ public class MainProgram
 	}
 
 //---------------------------------end of query methods----------------- beginning of webcrawl methods------------------------------
-
 
 	public ArrayList<Object> SelectWebcrawl()
 	{
@@ -253,9 +252,10 @@ public class MainProgram
 						System.out.println("3.) View all user's information");
 						System.out.println("4.) View a users previous queries");
 						System.out.println("5.) View previous webcrawls");
-						System.out.println("6.) Modify info of a user");
-						System.out.println("7.) Delete a user");
-						System.out.println("8.) Exit");
+						System.out.println("6.) View all URLS");
+						System.out.println("7.) Modify info of a user");
+						System.out.println("8.) Delete a user");
+						System.out.println("9.) Exit");
 						int ch= scan.nextInt();
 						scan.nextLine();//eat up extra 
 						System.out.println("");
@@ -334,7 +334,14 @@ public class MainProgram
 								for (int i=0; i<allcrawls.size(); i++)
 									System.out.println((Webcrawl) allcrawls.get(i));//print all webcrawls							
 								break;
-							case 6: //modify register info of a user
+
+							case 6: //view all URL's
+								ArrayList<Url> allURLS= dm.SelectUrls();
+								for (int i=0; i<allURLS.size(); i++)
+									System.out.println(allURLS.get(i).getUrlLink() );//print all webcrawls							
+								break;	
+
+							case 7: //modify register info of a user
 								System.out.println("Enter username of account to modify: ");
 								String acct=scan.nextLine();
 
@@ -373,7 +380,7 @@ public class MainProgram
 								System.out.print("Update Successful! New Info: ");
 								dm.SelectUser(myuser.username);// prints user new info
 								break;
-							case 7: 
+							case 8: 
 								System.out.println("Enter username of user to delete");
 								String user2= scan.nextLine();
 
@@ -382,7 +389,7 @@ public class MainProgram
 								if (user2.equals(u.getUsername()))
 									System.exit(0);//deleted own account so end program
 								break;
-							case 8: //Exit
+							case 9: //Exit
 								System.exit(0);
 								break;
 						}

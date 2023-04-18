@@ -10,7 +10,7 @@ public class Scraper
 {
 	public static void main(String [] args) throws IOException
 	{
-		String homepage = "http://web.stonehill.edu/compsci/";
+		String homepage = "https://www.stonehill.edu/"; //"http://web.stonehill.edu/compsci/" 
 		Scraper test = new Scraper();
 		// System.out.println("Title Test");
 		// System.out.println(test.titleFinder(homepage));
@@ -25,15 +25,16 @@ public class Scraper
 		Document doc= null;
 		try{
 			doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+												// http://web.stonehill.edu/compsci/
 		}catch(Exception e)
 		{
 			//System.out.println("Faulty URL in scraper");
 		}
 		String total = "";
-		if (doc !=null)//avoid null pointer
+		if (doc != null)//avoid null pointer
 		{
-			Elements body = doc.select("tbody");
-			for(Element e : body.select("tr"))
+			Elements body = doc.select("body"); // Elements body = doc.select("tbody");
+			for(Element e : body.select("div")) // for(Element e : body.select("tr"))
 			{
 				String text = e.text(); 
 				total += text + " ";
@@ -41,6 +42,8 @@ public class Scraper
 		}
 		return total;
 	}
+
+	
 
 	public String titleFinder(String url) throws IOException 
 	{
@@ -107,7 +110,7 @@ public class Scraper
 	public boolean checkURL(String url) {
 		MainProgram mp = new MainProgram();
 		// System.out.println("run selectURL");
-		String check = mp.SelectUrl(url);
+		String check = mp.SelectUrls(url);
 		// System.out.println("-------" + check);
 		if(check != "") // Already in DB
 			return false; 

@@ -10,14 +10,14 @@ public class Scraper
 {
 	public static void main(String [] args) throws IOException
 	{
-		String homepage = "https://www.stonehill.edu/"; //"http://web.stonehill.edu/compsci/" 
+		String homepage = "http://web.stonehill.edu/compsci/"; // "https://www.stonehill.edu/"
 		Scraper test = new Scraper();
 		// System.out.println("Title Test");
 		// System.out.println(test.titleFinder(homepage));
-		System.out.println("Scraper Test");
-		System.out.println(test.textScraper(homepage));
+		// System.out.println("Scraper Test");
+		// System.out.println(test.textScraper(homepage));
 		// System.out.println("Crawler Test");
-		// test.webCrawler(homepage, homepage,1);
+		// test.testWebCrawler(homepage, homepage);
 	}
 
 	public String textScraper(String url) throws IOException 
@@ -93,15 +93,17 @@ public class Scraper
 			// String homepage = "http://web.stonehill.edu/compsci/";
 			if (doc!= null)//avoid null pointer
 			{
-				Elements body = doc.select("tbody");
-				System.out.println(url + " --- " + body.select("tr").size());
+				Elements body = doc.select("body");
+				// System.out.println(url + " --- " + body.select("a").size());
 				//int i = 0;
-				for(Element e : body.select("tr")) 
+				for(Element e : body.select("a")) 
 				{
-					String addition = e.select("a").attr("href");
-					if(addition.contains(":") || addition.contains(" ") || addition.contains("#")) { continue; }
-					String urls = homepage + addition;
-					webCrawler(urls, homepage, crawlNum);//will only call from working urls
+					String addition = e.attr("href");
+					if(addition.contains(" ") || addition.contains("#")) { continue; }
+					String urls;
+					if(addition.contains(":")) {urls = addition;}
+					else {urls = homepage + addition;}
+					webCrawler(urls, homepage, crawlNum); //will only call from working urls
 				}
 			}
 		}

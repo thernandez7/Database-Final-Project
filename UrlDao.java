@@ -135,6 +135,9 @@ public class UrlDao {
 		if (url.ptitle == null) {
 			url.setPtitle("no page title");
 		}
+		if (url.text.length() == 0) {
+			return;
+		}
 		//System.out.println("In insert()...");
 		Statement statement = connection.createStatement();
 		String sql = "insert into Urls values ("+

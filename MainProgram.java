@@ -179,7 +179,7 @@ public class MainProgram
 		switch(choice)
 		{
 			case 1: //Unregistered user -- register
-				System.out.println("Welcome New User! \nPlease provide the following information to create your account: ");
+				System.out.println("\n\nWelcome New User! \nPlease provide the following information to create your account: ");
 				System.out.println("Enter Username: ");
 				scan.nextLine();
 				String username= scan.nextLine();
@@ -243,7 +243,7 @@ public class MainProgram
 					//ADMIN CAPABILITIES
 					if (u.getAdmin().equalsIgnoreCase("Yes"))//if admin user
 					{
-						System.out.println("Welcome Back Admin User! ");
+						System.out.println("\n\nWelcome Back Admin User! ");
 						while(true)
 						{
 						System.out.println("Please enter an option below: ");
@@ -394,11 +394,12 @@ public class MainProgram
 								System.exit(0);
 								break;
 						}
+						System.out.println("");
 						}//end while true
 					}
 					else //NORMAL USER-- NOT A ADMIN
 					{
-						System.out.println("Welcome Regular User! ");
+						System.out.println("\n\nWelcome Regular User! ");
 						while(true)
 						{
 						System.out.println("Please enter an option below: ");
@@ -501,6 +502,7 @@ public class MainProgram
 								System.exit(0);
 								break;
 						}
+						System.out.println("");
 						}//end while true
 					}
 				}

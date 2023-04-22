@@ -140,7 +140,7 @@ public class UserDao {
 								"'"+user.name+"',"+
 								"'"+user.admin+"')";
 
-		System.out.println("insert(): "+sql);
+		//System.out.println("insert(): "+sql);
 		statement.executeUpdate(sql);
 		statement.close();
 	}
@@ -159,21 +159,45 @@ public void update(User user,String oldusername)//updates user
 		//System.out.println("In update()...");
 		Statement statement = connection.createStatement();
 
-			String us= user.username;
+			String us= user.username;//new values
 			String ps= user.password;
 			String fn= user.name;
 			String ad= user.admin;
 			
+		if (!us.equals(oldusername))//changing username so must change in tables that reference as a foreign key
+		{
+			//insert new username into users- this will be the reference of the other tables
+			String sql = "insert into USERS values ("+
+									"'"+us+"',"+
+									"'"+ps+"',"+
+									"'"+fn+"',"+
+									"'"+ad+"')";
+			statement.executeUpdate(sql);
 
-		// statement.executeUpdate("delete from USERS where username='"+ oldusername+"'");
-		String sql = "UPDATE USERS SET "+
-								  "username='"+us+"',"+
-								  "password='"+ps+"',"+
-								  "name='"+fn+"',"+
-								  "admin='"+ad+"' WHERE username = '"+ oldusername+"'";
+			//change the webcrawl and queries reference to username
+			String sql1 = "UPDATE WEBCRAWL SET "+
+								  "username='"+us+"'"+
+								  " WHERE username = '"+ oldusername+"'";//reference new username 
 
-		//System.out.println("update(): "+sql);
-		statement.executeUpdate(sql);
+			statement.executeUpdate(sql1);
+
+			String sql2 = "UPDATE QUERIES SET "+
+								  "username='"+us+"'"+
+								  " WHERE username = '"+ oldusername+"'";//reference new username
+			statement.executeUpdate(sql2);
+		 	statement.executeUpdate("delete from USERS where username='"+ oldusername+"'");
+		}
+		else
+		{
+			String sql3 = "UPDATE USERS SET "+
+									"username='"+us+"',"+
+									"password='"+ps+"',"+
+									"name='"+fn+"',"+
+									"admin='"+ad+"' WHERE username = '"+ oldusername+"'";
+
+			//System.out.println("update(): "+sql);
+			statement.executeUpdate(sql3);
+		}
 		statement.close();
 	}
 	catch (Exception e)

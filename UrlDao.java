@@ -196,6 +196,29 @@ public class UrlDao {
 	}
  }
 
+ public ArrayList<Url> search(String queryIn) {
+	ArrayList<Url> results = new ArrayList<Url>();
+	   try {
+		//System.out.println("In selectAll()...");
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("select * from Urls where dbms_lob.instr(text,'" + queryIn +"') >= 1");
+		  
+		while (resultSet.next())
+		{
+			Url url = new Url(resultSet.getString("urlLink"),resultSet.getString("ptitle"),resultSet.getClob("text"),resultSet.getString("startingUrl"),resultSet.getInt("crawlNum"));
+			results.add(url);
+		}
+		resultSet.close();
+		statement.close();
+	}
+	catch (Exception e)
+	{
+		e.printStackTrace();
+	}
+
+	return results;
+ }
+
  public static void main(String[] args) throws SQLException {
 	UrlDao uDao = new UrlDao();
 	Statement s = uDao.connection.createStatement();

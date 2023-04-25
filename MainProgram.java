@@ -266,7 +266,7 @@ public class MainProgram
 								Scraper scraper= new Scraper();
 								System.out.println("Enter in a starting Url: ");
 								String starturl= scan.nextLine();
-								if(starturl.charAt(starturl.length()-1) != '/') { starturl = starturl + '/'; }
+								if(starturl.charAt(starturl.length()-1) != '/') { System.out.println(starturl.charAt(starturl.length()-1)); starturl = starturl + '/'; }
 								System.out.println("Enter the date (MM/DD/YY): ");
 								String date= scan.nextLine();
 								System.out.println("Enter the time (HH:MM(am/pm)): ");
@@ -301,10 +301,12 @@ public class MainProgram
 									dm.insertQuery(u.getUsername(),queryIn, null);//insert this query into the db Query table
 								}
 								//print out results for user to view 
+								System.out.println("\nSearch Results:");
 								for (int i=0; i<searchResults.size(); i++)
 								{
-									System.out.print(searchResults.get(i).getPtitle());//print ptitle
+									System.out.println(searchResults.get(i).getPtitle());//print ptitle
 									System.out.println("\t"+searchResults.get(i).getUrlLink());//print the Url Link
+									System.out.println("");//have space between each result
 								}
 								break;
 							case 3: //view user info
@@ -318,15 +320,12 @@ public class MainProgram
 
 								//get Query object 
 								ArrayList<Object> queries= dm.selectQuery();
-								Query myq= new Query();
 								for(int n=0; n<queries.size(); n++)//check if valid match
 								{
 									Query query= (Query)queries.get(n);
 									if (query.getUsername().equals(acctname))//get username specified
 									{
-										myq= query;//holds user we want to view queries of
-										System.out.println((Query)myq);
-										break;
+										System.out.println(query);
 									}
 								}
 								break;
@@ -432,10 +431,12 @@ public class MainProgram
 									dm.insertQuery(u.getUsername(),queryIn, null);//insert this query into the db Query table
 
 								//print out results for user to view 
+								System.out.println("\nSearch Results");
 								for (int i=0; i<searchResults.size(); i++)
 								{
 									System.out.println(searchResults.get(i).getPtitle());//print ptitle
 									System.out.println("\t"+searchResults.get(i).getUrlLink());//print the Url Link
+									System.out.println("");//have space between each result
 								}
 								break;
 							case 2: //view your user info
@@ -452,7 +453,6 @@ public class MainProgram
 									{
 										myq= query;//holds user we want to view queries of
 										System.out.println((Query)myq);
-										break;
 									}
 								}
 								break;
@@ -463,7 +463,7 @@ public class MainProgram
 								for(int n=0; n<users.size(); n++)//check if valid match
 								{
 									User user= (User)users.get(n);
-									if (user.getUsername().equals(u.getUsername()))//get username specified
+									if (user.getUsername().equals(u.getUsername()))
 									{
 										myuser= user;
 										break;
@@ -478,7 +478,8 @@ public class MainProgram
 
 								if (attr.equalsIgnoreCase("username")){
 									myuser.username= newvalue;
-									use= newvalue;}
+									use= newvalue;
+									u.setUsername(newvalue);}
 								else if (attr.equalsIgnoreCase("password"))
 									myuser.password= newvalue;
 								else if (attr.equalsIgnoreCase("name"))

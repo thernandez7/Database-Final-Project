@@ -11,14 +11,14 @@ public class Scraper
 {
 	public static void main(String [] args) throws IOException
 	{
-		String homepage = "http://web.stonehill.edu/compsci/"; // "https://www.stonehill.edu/"
+		String homepage = "https://www.acm.org/"; // "https://www.stonehill.edu/"
 		Scraper test = new Scraper();
 		// System.out.println("Title Test");
 		// System.out.println(test.titleFinder(homepage));
 		// System.out.println("Scraper Test");
 		// System.out.println(test.textScraper(homepage));
-		// System.out.println("Crawler Test");
-		// test.testWebCrawler(homepage, homepage);
+		System.out.println("Crawler Test");
+		test.testWebCrawler(homepage, homepage);
 	}
 
 	public String textScraper(String url) throws IOException 
@@ -131,5 +131,35 @@ public class Scraper
                 return null;
             }
         }
+	}
+
+	public void testWebCrawler(String url, String homepage) throws IOException 
+	{
+		Document doc= null;
+		try{
+			doc = Jsoup.connect(url).timeout(6000).get(); // http://web.stonehill.edu/compsci/ComputerScienceCourses.htm
+		}
+		catch(Exception e)
+		{
+			//System.out.println("Faulty link in crawl");
+		}
+
+		// String homepage = "http://web.stonehill.edu/compsci/";
+		if (doc!= null)//avoid null pointer
+		{
+			Elements body = doc.select("body");
+			System.out.println(url + " --- " + body.select("a").size());
+			//int i = 0;
+			for(Element e : body.select("a")) 
+			{
+				String addition = e.attr("href");
+				System.out.println(addition);
+				if(addition.contains(" ") || addition.contains("#")) { continue; }
+				String urls;
+				if(addition.contains(":")) {urls = addition;}
+				else {urls = homepage + addition;}
+				testWebCrawler(urls, homepage); //will only call from working urls
+			}
+		}
 	}
 }

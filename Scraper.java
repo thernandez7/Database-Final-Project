@@ -17,7 +17,7 @@ public class Scraper
 		// System.out.println(test.titleFinder(homepage));
 		// System.out.println("Scraper Test");
 		// System.out.println(test.textScraper(homepage));
-		System.out.println("Crawler Test");
+		//System.out.println("Crawler Test");
 		test.testWebCrawler(homepage, homepage);
 	}
 
@@ -60,11 +60,14 @@ public class Scraper
 		{
 			Elements body = doc.select("head");
 			for(Element e : body.select("title")) 
+			{
 				title = e.text(); 
+				title= title.replace('\'',' ');
+			}
 		}
 		// System.out.println("Title - " + title);
 		
-		return title;//will return title or defualt if null
+		return title;//will return title or default if null
 	}
 
 	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
@@ -73,11 +76,12 @@ public class Scraper
 			UrlDao uDao = new UrlDao();
 			// call titleFinder and set ptitle equal to result
 			String ptitle = titleFinder(url);
-			if (ptitle == "" || ptitle == null)//if null ptitle, change to default value
+			if (ptitle == "" || ptitle==" " || ptitle == null)//if null ptitle, change to default value
 				ptitle = "Untitled Page";
 
 			// Insert into DB
 			if (homepage.equals(url))//this is the starting url
+
 				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"Yes",crawlNum));//a starting url
 			else 
 				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"No",crawlNum));//not a starting url
@@ -148,12 +152,12 @@ public class Scraper
 		if (doc!= null)//avoid null pointer
 		{
 			Elements body = doc.select("body");
-			System.out.println(url + " --- " + body.select("a").size());
+			//System.out.println(url + " --- " + body.select("a").size());
 			//int i = 0;
 			for(Element e : body.select("a")) 
 			{
 				String addition = e.attr("href");
-				System.out.println(addition);
+				//System.out.println(addition);
 				if(addition.contains(" ") || addition.contains("#")) { continue; }
 				String urls;
 				if(addition.contains(":")) {urls = addition;}

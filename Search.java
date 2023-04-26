@@ -34,10 +34,13 @@ public class Search {
         }
 
         ArrayList<Url> titleSites = new ArrayList<Url>();
-        for (Url site : sortedResults) {
-            if (site.ptitle.contains(queryIn)) {
+        for (Url site : sortedResults) 
+	   {
+		if (site.ptitle !=null)
+		{
+            if (site.ptitle.contains(queryIn))
                 titleSites.add(site);
-            }
+		}
         }
         for (Url site : titleSites) {
             sortedResults.remove(site);

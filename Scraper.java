@@ -18,7 +18,7 @@ public class Scraper
 		// System.out.println("Scraper Test");
 		// System.out.println(test.textScraper(homepage));
 		//System.out.println("Crawler Test");
-		test.testWebCrawler(homepage, homepage);
+		// test.testWebCrawler(homepage, homepage);
 	}
 
 	public String textScraper(String url) throws IOException 

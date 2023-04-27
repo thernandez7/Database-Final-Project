@@ -158,13 +158,9 @@ public class MainProgram
 		Scanner scan= new Scanner(System.in); Scanner scan1= new Scanner(System.in);
 
 		MainProgram dm = new MainProgram();
-		// int crawlNumber=dm.SelectMaxWebcrawl()+1;//keep track of number of crawls for webcrawl table
-		// //System.out.println("CrawlNum: "+ crawlNumber);
-		// System.out.println();
-
-		ArrayList<Object> l= dm.SelectUser();
-		for (int i=0; i<l.size(); i++)
-			System.out.println((User) l.get(i));//prints all users
+		// ArrayList<Object> l= dm.SelectUser();
+		// for (int i=0; i<l.size(); i++)
+		// 	System.out.println((User) l.get(i));//prints all users
 
 		System.out.println("Welcome!");
 		while(true)

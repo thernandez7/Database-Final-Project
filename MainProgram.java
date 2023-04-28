@@ -262,7 +262,6 @@ public class MainProgram
 								Scraper scraper= new Scraper();
 								System.out.println("Enter in a starting Url: ");
 								String starturl= scan.nextLine();
-								if(starturl.charAt(starturl.length()-1) != '/') { System.out.println(starturl.charAt(starturl.length()-1)); starturl = starturl + '/'; }
 								System.out.println("Enter the date (MM/DD/YY): ");
 								String date= scan.nextLine();
 								System.out.println("Enter the time (HH:MM(am/pm)): ");

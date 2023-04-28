@@ -73,6 +73,7 @@ public class Scraper
 	public void webCrawler(String url, String homepage, int crawlNum) throws IOException 
 	{
 		if(checkURL(url)) {
+			System.out.println(url);
 			UrlDao uDao = new UrlDao();
 			// call titleFinder and set ptitle equal to result
 			String ptitle = titleFinder(url);
@@ -81,7 +82,6 @@ public class Scraper
 
 			// Insert into DB
 			if (homepage.equals(url))//this is the starting url
-
 				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"Yes",crawlNum));//a starting url
 			else 
 				uDao.insert(new Url(url,ptitle,stringToClob(textScraper(url)),"No",crawlNum));//not a starting url
